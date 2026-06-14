@@ -1,0 +1,2021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The JavaScript Atlas — Beginner to Advanced</title>
+<style>
+  :root{
+    --ink:#11150f;
+    --paper:#f3efe4;
+    --paper-2:#ebe5d4;
+    --moss:#3f5e3a;
+    --moss-bright:#6f9a4c;
+    --rust:#b6502b;
+    --gold:#c98a1e;
+    --line:#cfc6ad;
+    --code-bg:#15180f;
+    --code-ink:#e8e3cf;
+    --code-comment:#7d8c6a;
+    --code-key:#d9a441;
+    --code-str:#9ac26b;
+    --code-fn:#e6915c;
+    --mono:"SF Mono", "JetBrains Mono",Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:Georgia,"Iowan Old Style",serif;
+    line-height:1.6;
+    font-size:17px;
+  }
+  /* ---------- layout ---------- */
+  .shell{display:flex;min-height:100vh}
+  nav.side{
+    width:280px;
+    flex:0 0 280px;
+    background:var(--paper-2);
+    border-right:1px solid var(--line);
+    padding:28px 0 60px;
+    position:sticky;
+    top:0;
+    height:100vh;
+    overflow-y:auto;
+  }
+  nav.side .brand{
+    padding:0 26px 18px;
+    border-bottom:1px solid var(--line);
+    margin-bottom:14px;
+  }
+  nav.side .brand h1{
+    font-size:21px;
+    margin:0 0 4px;
+    letter-spacing:-.01em;
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-weight:800;
+  }
+  nav.side .brand span{
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.18em;
+    color:var(--moss);
+    font-family:"Helvetica Neue",Arial,sans-serif;
+  }
+  nav.side .lvl{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.16em;
+    color:var(--rust);
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-weight:700;
+    padding:16px 26px 6px;
+  }
+  nav.side a{
+    display:block;
+    padding:5px 26px 5px 26px;
+    color:var(--ink);
+    text-decoration:none;
+    font-size:14.5px;
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    border-left:3px solid transparent;
+  }
+  nav.side a:hover{background:rgba(111,154,76,.16);border-left-color:var(--moss-bright)}
+  main{flex:1;min-width:0;padding:0 0 120px}
+  .wrap{max-width:820px;margin:0 auto;padding:0 32px}
+
+  /* ---------- hero ---------- */
+  header.hero{
+    background:
+      radial-gradient(circle at 12% 20%, rgba(111,154,76,.22), transparent 40%),
+      radial-gradient(circle at 88% 80%, rgba(182,80,43,.16), transparent 45%),
+      var(--ink);
+    color:var(--paper);
+    padding:70px 0 64px;
+    border-bottom:4px solid var(--gold);
+  }
+  header.hero .wrap{padding-top:0}
+  header.hero .eyebrow{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    text-transform:uppercase;
+    letter-spacing:.28em;
+    font-size:12px;
+    color:var(--gold);
+    margin-bottom:18px;
+  }
+  header.hero h1{
+    font-size:clamp(38px,6vw,68px);
+    line-height:1.02;
+    margin:0 0 20px;
+    font-weight:400;
+    letter-spacing:-.02em;
+  }
+  header.hero h1 em{color:var(--moss-bright);font-style:italic}
+  header.hero p{
+    font-size:19px;
+    max-width:580px;
+    color:#d8d2bf;
+    margin:0 0 8px;
+  }
+  .legend{
+    margin-top:30px;display:flex;gap:26px;flex-wrap:wrap;
+    font-family:"Helvetica Neue",Arial,sans-serif;font-size:13px;
+  }
+  .legend span{display:flex;align-items:center;gap:8px;color:#cfc8b4}
+  .dot{width:11px;height:11px;border-radius:50%}
+
+  /* ---------- sections ---------- */
+  .level-band{
+    padding:46px 0 10px;
+  }
+  .level-band .wrap{display:flex;align-items:baseline;gap:18px;flex-wrap:wrap}
+  .level-band .num{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-weight:800;font-size:54px;color:var(--line);line-height:1;
+  }
+  .level-band h2{
+    font-size:34px;margin:0;font-weight:400;letter-spacing:-.01em;
+  }
+  .level-band .tag{
+    font-family:"Helvetica Neue",Arial,sans-serif;font-size:12px;
+    text-transform:uppercase;letter-spacing:.16em;color:var(--rust);
+    border:1px solid var(--rust);padding:3px 10px;border-radius:20px;
+  }
+  .level-band p.intro{margin:14px auto 0;max-width:820px;color:#46402f}
+
+  section.topic{padding:30px 0 8px;border-top:1px solid var(--line);margin-top:34px}
+  section.topic:first-of-type{border-top:none}
+  section.topic h3{
+    font-size:25px;margin:0 0 4px;font-weight:700;
+    font-family:"Helvetica Neue",Arial,sans-serif;letter-spacing:-.01em;
+  }
+  section.topic .kicker{
+    font-family:"Helvetica Neue",Arial,sans-serif;font-size:12px;
+    text-transform:uppercase;letter-spacing:.15em;color:var(--moss);
+    margin-bottom:14px;display:block;
+  }
+  section.topic h4{
+    font-size:18px;margin:26px 0 6px;font-weight:700;
+    font-family:"Helvetica Neue",Arial,sans-serif;color:var(--moss);
+  }
+  p{margin:12px 0}
+  ul,ol{margin:12px 0;padding-left:22px}
+  li{margin:5px 0}
+  strong{color:#1d2417}
+  code.inl{
+    font-family:var(--mono);background:var(--paper-2);
+    border:1px solid var(--line);border-radius:4px;
+    padding:1px 6px;font-size:14px;color:#5b3a1c;
+  }
+
+  /* ---------- code blocks ---------- */
+  pre{
+    background:var(--code-bg);color:var(--code-ink);
+    border-radius:10px;padding:18px 20px;overflow-x:auto;
+    font-family:var(--mono);font-size:13.5px;line-height:1.65;
+    margin:16px 0;border:1px solid #2b3120;
+  }
+  pre .c{color:var(--code-comment);font-style:italic}
+  pre .k{color:var(--code-key)}
+  pre .s{color:var(--code-str)}
+  pre .f{color:var(--code-fn)}
+  pre .n{color:#c4a3e0}
+
+  .note{
+    background:rgba(201,138,30,.12);
+    border-left:4px solid var(--gold);
+    padding:12px 18px;margin:18px 0;border-radius:0 8px 8px 0;
+    font-size:15.5px;
+  }
+  .note strong{color:var(--rust)}
+  .pitfall{
+    background:rgba(182,80,43,.10);
+    border-left:4px solid var(--rust);
+    padding:12px 18px;margin:18px 0;border-radius:0 8px 8px 0;
+    font-size:15.5px;
+  }
+
+  .toplink{
+    display:inline-block;margin-top:10px;font-size:12px;
+    font-family:"Helvetica Neue",Arial,sans-serif;color:var(--moss);
+    text-decoration:none;text-transform:uppercase;letter-spacing:.1em;
+  }
+  .toplink:hover{color:var(--rust)}
+
+  footer{
+    background:var(--ink);color:#cfc8b4;padding:46px 0;
+    text-align:center;font-size:14px;
+  }
+  footer .wrap{padding-top:0}
+  footer a{color:var(--moss-bright)}
+
+  .menu-btn{display:none}
+  @media(max-width:880px){
+    .shell{flex-direction:column}
+    nav.side{
+      position:static;width:100%;height:auto;flex-basis:auto;
+      border-right:none;border-bottom:1px solid var(--line);
+      max-height:0;overflow:hidden;padding:0;transition:max-height .3s;
+    }
+    nav.side.open{max-height:80vh;overflow-y:auto;padding:18px 0 30px}
+    .menu-btn{
+      display:block;position:sticky;top:0;z-index:20;width:100%;
+      background:var(--ink);color:var(--paper);border:none;
+      padding:14px;font-family:"Helvetica Neue",Arial,sans-serif;
+      font-size:15px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;
+    }
+    .wrap{padding:0 20px}
+    header.hero{padding:48px 0 44px}
+  }
+</style>
+</head>
+<body>
+<button class="menu-btn" onclick="document.querySelector('nav.side').classList.toggle('open')">☰ Contents</button>
+<div class="shell">
+<nav class="side" id="nav"><div class="brand">
+  <h1>JS Atlas</h1>
+  <span>Contents</span>
+</div>
+<div class="lvl" style="color:var(--moss-bright)">1 · Foundations</div>
+<a href="#what-is-js">What JavaScript Is</a>
+<a href="#variables">Variables & Declarations</a>
+<a href="#data-types">Data Types</a>
+<a href="#operators">Operators & Type Coercion</a>
+<a href="#control-flow">Control Flow</a>
+<a href="#loops">Loops</a>
+<a href="#functions">Functions</a>
+<a href="#scope">Scope & Hoisting</a>
+<a href="#strings">Strings</a>
+<a href="#numbers-math">Numbers & Math</a>
+<a href="#arrays-basic">Arrays (Basics)</a>
+<a href="#objects-basic">Objects (Basics)</a>
+<a href="#dom-basics">DOM Basics</a>
+<a href="#debugging">Debugging Basics</a>
+<div class="lvl" style="color:var(--gold)">2 · Intermediate</div>
+<a href="#array-methods">Array Iteration Methods</a>
+<a href="#array-mutation">Mutating vs Non-Mutating</a>
+<a href="#destructuring">Destructuring</a>
+<a href="#spread-rest">Spread & Rest</a>
+<a href="#object-methods">Object Methods & Iteration</a>
+<a href="#arrow-functions">Arrow Functions</a>
+<a href="#closures">Closures</a>
+<a href="#this-keyword">The this Keyword</a>
+<a href="#es6-features">ES6+ Essentials</a>
+<a href="#modules">Modules</a>
+<a href="#error-handling">Error Handling</a>
+<a href="#dom-events">DOM Events & Manipulation</a>
+<a href="#json">JSON</a>
+<a href="#timers-async">Timers & Async Basics</a>
+<a href="#regex">Regular Expressions</a>
+<a href="#date-time">Dates & Time</a>
+<div class="lvl" style="color:var(--rust)">3 · Advanced</div>
+<a href="#promises">Promises</a>
+<a href="#async-await">async / await</a>
+<a href="#event-loop">The Event Loop</a>
+<a href="#fetch-api">Fetch & HTTP</a>
+<a href="#prototypes">Prototypes & Inheritance</a>
+<a href="#classes">Classes</a>
+<a href="#functional">Functional Programming</a>
+<a href="#advanced-closures">Currying & Memoization</a>
+<a href="#iterators-generators">Iterators & Generators</a>
+<a href="#collections">Map, Set, WeakMap, WeakSet</a>
+<a href="#symbols">Symbols</a>
+<a href="#proxy-reflect">Proxy & Reflect</a>
+<a href="#modules-deep">Module Systems Deep-Dive</a>
+<a href="#memory">Memory & Garbage Collection</a>
+<a href="#performance">Performance Patterns</a>
+<a href="#web-apis">Browser Web APIs</a>
+<a href="#design-patterns">Design Patterns</a>
+<div class="lvl" style="color:#c4a3e0">4 · Ecosystem & Beyond</div>
+<a href="#typescript">TypeScript</a>
+<a href="#build-tools">Build Tools & Bundlers</a>
+<a href="#npm">Package Management</a>
+<a href="#testing">Testing</a>
+<a href="#nodejs">Node.js</a>
+<a href="#frameworks">Frontend Frameworks</a>
+<a href="#state">State Management</a>
+<a href="#security">Web Security</a>
+<a href="#pwa-wasm">PWAs, WebAssembly & What's Next</a></nav>
+<main>
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="eyebrow">A complete reference · Beginner → Advanced</div>
+    <h1>The JavaScript <em>Atlas</em></h1>
+    <p>Every concept that takes you from your first <code class="inl" style="background:rgba(255,255,255,.08);color:#e8e3cf;border-color:#3a4030">console.log</code> to writing async, prototype-savvy, production-grade code — explained, demonstrated, and ordered.</p>
+    <div class="legend">
+      <span><span class="dot" style="background:var(--moss-bright)"></span>Foundations</span>
+      <span><span class="dot" style="background:var(--gold)"></span>Intermediate</span>
+      <span><span class="dot" style="background:var(--rust)"></span>Advanced</span>
+      <span><span class="dot" style="background:#c4a3e0"></span>Ecosystem</span>
+    </div>
+  </div>
+</header>
+<div class="level-band" id="foundations">
+  <div class="wrap">
+    <span class="num">1</span>
+    <h2>Foundations</h2>
+    <span class="tag" style="color:var(--moss-bright);border-color:var(--moss-bright)">Level 1</span>
+  </div>
+  <div class="wrap"><p class="intro">The bedrock. These are the ideas every line of JavaScript rests on — how values are stored, how decisions are made, and how code is grouped into reusable pieces. Master these and everything later becomes pattern recognition.</p></div>
+</div>
+<section class="topic" id="what-is-js">
+  <div class="wrap">
+    <span class="kicker">Orientation</span>
+    <h3>What JavaScript Is</h3>
+    
+<p>JavaScript is a <strong>high-level, interpreted programming language</strong> that runs in web browsers, on servers (via Node.js), and in countless embedded environments. It was created in 1995 to make web pages interactive and has grown into one of the most widely used languages in the world.</p>
+<p>It is <strong>dynamically typed</strong> (you don't declare the type of a variable), <strong>single-threaded</strong> (it runs one operation at a time), and <strong>multi-paradigm</strong> (you can write it in procedural, object-oriented, or functional styles).</p>
+<p>Your code is read and executed by an <strong>engine</strong> — V8 in Chrome and Node, SpiderMonkey in Firefox, JavaScriptCore in Safari. The engine parses your text, compiles it to fast machine instructions just-in-time, and runs it.</p>
+<h4>Running your first code</h4>
+<pre><span class="c">// Open any browser, press F12, click "Console", and type:</span>
+console.<span class="f">log</span>(<span class="s">"Hello, world!"</span>);
+<span class="c">// In Node.js, save as app.js and run:  node app.js</span></pre>
+<div class="note"><strong>console.log</strong> is your most-used tool for years to come. It prints values so you can see what your program is doing.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="variables">
+  <div class="wrap">
+    <span class="kicker">Storing values</span>
+    <h3>Variables & Declarations</h3>
+    
+<p>A <strong>variable</strong> is a named container for a value. JavaScript has three keywords to declare one: <code class="inl">let</code>, <code class="inl">const</code>, and the older <code class="inl">var</code>.</p>
+<pre><span class="k">let</span> score = <span class="n">10</span>;        <span class="c">// can be reassigned</span>
+score = <span class="n">20</span>;             <span class="c">// fine</span>
+
+<span class="k">const</span> name = <span class="s">"Ada"</span>;    <span class="c">// cannot be reassigned</span>
+<span class="c">// name = "Grace";      // TypeError!</span>
+
+<span class="k">var</span> old = <span class="s">"legacy"</span>;     <span class="c">// avoid in modern code</span></pre>
+<h4>Which to use?</h4>
+<ul>
+<li><strong>Default to <code class="inl">const</code>.</strong> It signals the binding won't change, which makes code easier to reason about.</li>
+<li><strong>Use <code class="inl">let</code></strong> only when you genuinely need to reassign (counters, accumulators, swapping).</li>
+<li><strong>Avoid <code class="inl">var</code>.</strong> It has confusing scope rules (function-scoped, hoisted) that cause bugs.</li>
+</ul>
+<div class="note"><code class="inl">const</code> on an object or array means the <em>binding</em> is fixed, not the contents — you can still push to a const array or change its properties.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="data-types">
+  <div class="wrap">
+    <span class="kicker">The values themselves</span>
+    <h3>Data Types</h3>
+    
+<p>JavaScript has <strong>seven primitive types</strong> plus objects. Primitives are immutable single values; everything else is an object.</p>
+<h4>The primitives</h4>
+<ul>
+<li><strong>String</strong> — text: <code class="inl">"hi"</code>, <code class="inl">'yo'</code>, <code class="inl">`hey`</code></li>
+<li><strong>Number</strong> — all numbers, integer or decimal: <code class="inl">42</code>, <code class="inl">3.14</code>, <code class="inl">-0</code>, <code class="inl">Infinity</code>, <code class="inl">NaN</code></li>
+<li><strong>BigInt</strong> — integers beyond safe number range: <code class="inl">9007199254740993n</code></li>
+<li><strong>Boolean</strong> — <code class="inl">true</code> / <code class="inl">false</code></li>
+<li><strong>undefined</strong> — a variable that has been declared but not assigned</li>
+<li><strong>null</strong> — an intentional "no value"</li>
+<li><strong>Symbol</strong> — a unique, immutable identifier (advanced)</li>
+</ul>
+<h4>The reference type</h4>
+<p><strong>Object</strong> — collections of key/value pairs. Arrays, functions, dates, and almost everything else are specialized objects.</p>
+<pre><span class="k">typeof</span> <span class="s">"hello"</span>     <span class="c">// "string"</span>
+<span class="k">typeof</span> <span class="n">42</span>          <span class="c">// "number"</span>
+<span class="k">typeof</span> <span class="k">true</span>        <span class="c">// "boolean"</span>
+<span class="k">typeof</span> <span class="k">undefined</span>   <span class="c">// "undefined"</span>
+<span class="k">typeof</span> <span class="k">null</span>        <span class="c">// "object"  ← a famous historical bug</span>
+<span class="k">typeof</span> {}          <span class="c">// "object"</span>
+<span class="k">typeof</span> []          <span class="c">// "object"  (use Array.isArray to check)</span>
+<span class="k">typeof</span> <span class="k">function</span>(){} <span class="c">// "function"</span></pre>
+<div class="pitfall"><strong>Watch out:</strong> <code class="inl">typeof null</code> returns <code class="inl">"object"</code> — a bug kept for backward compatibility. To check for null, use <code class="inl">value === null</code>.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="operators">
+  <div class="wrap">
+    <span class="kicker">Doing things to values</span>
+    <h3>Operators & Type Coercion</h3>
+    
+<p>Operators combine and compare values. The categories you'll use constantly:</p>
+<pre><span class="c">// Arithmetic</span>
+<span class="n">5</span> + <span class="n">2</span>   <span class="c">// 7</span>
+<span class="n">5</span> % <span class="n">2</span>   <span class="c">// 1  (remainder / modulo)</span>
+<span class="n">5</span> ** <span class="n">2</span>  <span class="c">// 25 (exponent)</span>
+
+<span class="c">// Comparison</span>
+<span class="n">5</span> > <span class="n">2</span>   <span class="c">// true</span>
+<span class="n">5</span> === <span class="s">"5"</span>  <span class="c">// false (strict: type AND value)</span>
+<span class="n">5</span> == <span class="s">"5"</span>   <span class="c">// true  (loose: coerces first)</span>
+
+<span class="c">// Logical</span>
+<span class="k">true</span> && <span class="k">false</span>  <span class="c">// false (AND)</span>
+<span class="k">true</span> || <span class="k">false</span>  <span class="c">// true  (OR)</span>
+!<span class="k">true</span>          <span class="c">// false (NOT)</span></pre>
+<h4>Type coercion</h4>
+<p>JavaScript automatically converts types in many operations. This is powerful but surprising:</p>
+<pre><span class="s">"5"</span> + <span class="n">3</span>     <span class="c">// "53"  (number becomes string)</span>
+<span class="s">"5"</span> - <span class="n">3</span>     <span class="c">// 2     (string becomes number)</span>
+<span class="k">true</span> + <span class="k">true</span>  <span class="c">// 2     (booleans become numbers)</span>
+[] + []      <span class="c">// ""    (arrays become strings)</span></pre>
+<div class="note"><strong>Golden rule:</strong> Always use <code class="inl">===</code> and <code class="inl">!==</code> (strict equality). Avoid <code class="inl">==</code> unless you have a specific reason. This single habit prevents a whole class of bugs.</div>
+<h4>Falsy values</h4>
+<p>Eight values are "falsy" — they behave like <code class="inl">false</code> in conditions: <code class="inl">false</code>, <code class="inl">0</code>, <code class="inl">-0</code>, <code class="inl">0n</code>, <code class="inl">""</code>, <code class="inl">null</code>, <code class="inl">undefined</code>, and <code class="inl">NaN</code>. Everything else is "truthy".</p>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="control-flow">
+  <div class="wrap">
+    <span class="kicker">Making decisions</span>
+    <h3>Control Flow</h3>
+    
+<p>Control flow lets your program choose different paths and repeat work.</p>
+<h4>Conditionals</h4>
+<pre><span class="k">if</span> (temp > <span class="n">30</span>) {
+  console.<span class="f">log</span>(<span class="s">"Hot"</span>);
+} <span class="k">else if</span> (temp > <span class="n">15</span>) {
+  console.<span class="f">log</span>(<span class="s">"Mild"</span>);
+} <span class="k">else</span> {
+  console.<span class="f">log</span>(<span class="s">"Cold"</span>);
+}
+
+<span class="c">// Ternary — a compact if/else that returns a value</span>
+<span class="k">const</span> label = temp > <span class="n">30</span> ? <span class="s">"Hot"</span> : <span class="s">"OK"</span>;
+
+<span class="c">// Switch — clean multi-branch on one value</span>
+<span class="k">switch</span> (day) {
+  <span class="k">case</span> <span class="s">"Sat"</span>:
+  <span class="k">case</span> <span class="s">"Sun"</span>:
+    console.<span class="f">log</span>(<span class="s">"Weekend"</span>);
+    <span class="k">break</span>;
+  <span class="k">default</span>:
+    console.<span class="f">log</span>(<span class="s">"Weekday"</span>);
+}</pre>
+<div class="pitfall"><strong>Don't forget <code class="inl">break</code></strong> in switch cases — without it, execution "falls through" to the next case (occasionally useful, usually a bug).</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="loops">
+  <div class="wrap">
+    <span class="kicker">Repeating work</span>
+    <h3>Loops</h3>
+    
+<p>Loops execute a block repeatedly. JavaScript gives you several, each suited to a situation.</p>
+<pre><span class="c">// Classic for — when you need an index/counter</span>
+<span class="k">for</span> (<span class="k">let</span> i = <span class="n">0</span>; i < <span class="n">5</span>; i++) {
+  console.<span class="f">log</span>(i);  <span class="c">// 0 1 2 3 4</span>
+}
+
+<span class="c">// while — repeat until a condition is false</span>
+<span class="k">let</span> n = <span class="n">3</span>;
+<span class="k">while</span> (n > <span class="n">0</span>) { console.<span class="f">log</span>(n); n--; }
+
+<span class="c">// do...while — runs the body at least once</span>
+<span class="k">do</span> { console.<span class="f">log</span>(<span class="s">"runs once minimum"</span>); } <span class="k">while</span> (<span class="k">false</span>);
+
+<span class="c">// for...of — iterate VALUES of arrays/strings/iterables</span>
+<span class="k">for</span> (<span class="k">const</span> fruit <span class="k">of</span> [<span class="s">"apple"</span>, <span class="s">"pear"</span>]) {
+  console.<span class="f">log</span>(fruit);
+}
+
+<span class="c">// for...in — iterate KEYS of an object (use sparingly)</span>
+<span class="k">for</span> (<span class="k">const</span> key <span class="k">in</span> {a:<span class="n">1</span>, b:<span class="n">2</span>}) {
+  console.<span class="f">log</span>(key);  <span class="c">// "a", "b"</span>
+}</pre>
+<p><strong>Loop control:</strong> <code class="inl">break</code> exits the loop entirely; <code class="inl">continue</code> skips to the next iteration.</p>
+<div class="note"><strong>Rule of thumb:</strong> use <code class="inl">for...of</code> for arrays, <code class="inl">for...in</code> for object keys, and the classic <code class="inl">for</code> when you need precise index control. For transforming arrays, prefer <code class="inl">.map()</code>/<code class="inl">.filter()</code> (covered later).</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="functions">
+  <div class="wrap">
+    <span class="kicker">Reusable blocks</span>
+    <h3>Functions</h3>
+    
+<p>A <strong>function</strong> is a reusable block of code that takes inputs (parameters), does work, and optionally returns a value. They are the fundamental unit of organization in JavaScript.</p>
+<pre><span class="c">// Function declaration — hoisted, can call before definition</span>
+<span class="k">function</span> <span class="f">add</span>(a, b) {
+  <span class="k">return</span> a + b;
+}
+
+<span class="c">// Function expression — assigned to a variable</span>
+<span class="k">const</span> multiply = <span class="k">function</span>(a, b) {
+  <span class="k">return</span> a * b;
+};
+
+<span class="c">// Arrow function — concise, modern (more later)</span>
+<span class="k">const</span> square = x => x * x;
+
+<span class="f">add</span>(<span class="n">2</span>, <span class="n">3</span>);      <span class="c">// 5</span>
+<span class="f">square</span>(<span class="n">4</span>);       <span class="c">// 16</span></pre>
+<h4>Parameters & arguments</h4>
+<pre><span class="k">function</span> <span class="f">greet</span>(name = <span class="s">"friend"</span>) {  <span class="c">// default parameter</span>
+  <span class="k">return</span> <span class="s">`Hello, </span>${name}<span class="s">!`</span>;
+}
+<span class="f">greet</span>();          <span class="c">// "Hello, friend!"</span>
+<span class="f">greet</span>(<span class="s">"Sam"</span>);     <span class="c">// "Hello, Sam!"</span>
+
+<span class="c">// Rest parameter — collect many args into an array</span>
+<span class="k">function</span> <span class="f">sum</span>(...nums) {
+  <span class="k">return</span> nums.<span class="f">reduce</span>((a, b) => a + b, <span class="n">0</span>);
+}
+<span class="f">sum</span>(<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>, <span class="n">4</span>);  <span class="c">// 10</span></pre>
+<div class="note">A function without a <code class="inl">return</code> statement returns <code class="inl">undefined</code>. The <code class="inl">return</code> keyword also immediately exits the function.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="scope">
+  <div class="wrap">
+    <span class="kicker">Where names live</span>
+    <h3>Scope & Hoisting</h3>
+    
+<p><strong>Scope</strong> determines where a variable is accessible. JavaScript has global scope, function scope, and block scope.</p>
+<pre><span class="k">const</span> g = <span class="s">"global"</span>;   <span class="c">// visible everywhere</span>
+
+<span class="k">function</span> <span class="f">outer</span>() {
+  <span class="k">const</span> f = <span class="s">"function"</span>;  <span class="c">// visible in outer()</span>
+  <span class="k">if</span> (<span class="k">true</span>) {
+    <span class="k">const</span> b = <span class="s">"block"</span>;    <span class="c">// visible only in this {}</span>
+    console.<span class="f">log</span>(g, f, b);  <span class="c">// all three work</span>
+  }
+  <span class="c">// console.log(b);     // ReferenceError</span>
+}</pre>
+<p><code class="inl">let</code> and <code class="inl">const</code> are <strong>block-scoped</strong> (confined to the nearest <code class="inl">{}</code>). The old <code class="inl">var</code> is <strong>function-scoped</strong>, ignoring blocks — a common source of bugs.</p>
+<h4>Hoisting</h4>
+<p>JavaScript "hoists" declarations to the top of their scope before running. Function declarations are fully hoisted; <code class="inl">var</code> is hoisted but undefined; <code class="inl">let</code>/<code class="inl">const</code> are hoisted into a "temporal dead zone" and error if used early.</p>
+<pre><span class="f">sayHi</span>();  <span class="c">// ✅ works — declaration hoisted</span>
+<span class="k">function</span> <span class="f">sayHi</span>() { console.<span class="f">log</span>(<span class="s">"hi"</span>); }
+
+<span class="c">// console.log(x); // ❌ ReferenceError (temporal dead zone)</span>
+<span class="k">let</span> x = <span class="n">5</span>;</pre>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="strings">
+  <div class="wrap">
+    <span class="kicker">Working with text</span>
+    <h3>Strings</h3>
+    
+<p>Strings are sequences of characters. They're immutable — methods return new strings rather than changing the original.</p>
+<pre><span class="k">const</span> s = <span class="s">"JavaScript"</span>;
+s.length              <span class="c">// 10</span>
+s.<span class="f">toUpperCase</span>()       <span class="c">// "JAVASCRIPT"</span>
+s.<span class="f">slice</span>(<span class="n">0</span>, <span class="n">4</span>)        <span class="c">// "Java"</span>
+s.<span class="f">includes</span>(<span class="s">"Script"</span>) <span class="c">// true</span>
+s.<span class="f">indexOf</span>(<span class="s">"S"</span>)       <span class="c">// 4</span>
+s.<span class="f">replace</span>(<span class="s">"Java"</span>, <span class="s">"Type"</span>) <span class="c">// "TypeScript"</span>
+s.<span class="f">split</span>(<span class="s">""</span>)          <span class="c">// ["J","a","v",...]</span>
+<span class="s">"  hi  "</span>.<span class="f">trim</span>()      <span class="c">// "hi"</span></pre>
+<h4>Template literals</h4>
+<p>Backticks let you embed expressions and write multi-line strings — far better than <code class="inl">+</code> concatenation.</p>
+<pre><span class="k">const</span> name = <span class="s">"Sam"</span>, age = <span class="n">30</span>;
+<span class="k">const</span> msg = <span class="s">`</span>${name}<span class="s"> is </span>${age}<span class="s"> years old.</span>
+<span class="s">This spans multiple lines.`</span>;</pre>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="numbers-math">
+  <div class="wrap">
+    <span class="kicker">Calculation</span>
+    <h3>Numbers & Math</h3>
+    
+<p>All JavaScript numbers are 64-bit floating point (there's no separate integer type, aside from BigInt). The <code class="inl">Math</code> object provides calculation helpers.</p>
+<pre>Math.<span class="f">round</span>(<span class="n">4.6</span>)    <span class="c">// 5</span>
+Math.<span class="f">floor</span>(<span class="n">4.9</span>)    <span class="c">// 4</span>
+Math.<span class="f">ceil</span>(<span class="n">4.1</span>)     <span class="c">// 5</span>
+Math.<span class="f">max</span>(<span class="n">1</span>, <span class="n">9</span>, <span class="n">3</span>)   <span class="c">// 9</span>
+Math.<span class="f">random</span>()       <span class="c">// 0 ≤ x < 1</span>
+Math.<span class="f">sqrt</span>(<span class="n">144</span>)     <span class="c">// 12</span>
+
+(<span class="n">3.14159</span>).<span class="f">toFixed</span>(<span class="n">2</span>)  <span class="c">// "3.14" (string!)</span>
+<span class="f">parseInt</span>(<span class="s">"42px"</span>)     <span class="c">// 42</span>
+<span class="f">parseFloat</span>(<span class="s">"3.5kg"</span>)  <span class="c">// 3.5</span>
+<span class="f">Number</span>(<span class="s">"123"</span>)        <span class="c">// 123</span></pre>
+<div class="pitfall"><strong>Floating-point gotcha:</strong> <code class="inl">0.1 + 0.2 === 0.3</code> is <code class="inl">false</code> (it's 0.30000000000000004). This affects all languages using IEEE 754. For money, work in integer cents or use a decimal library.</div>
+<pre><span class="c">// NaN = "Not a Number", the result of invalid math</span>
+<span class="n">0</span> / <span class="n">0</span>             <span class="c">// NaN</span>
+Number.<span class="f">isNaN</span>(<span class="n">0</span>/<span class="n">0</span>) <span class="c">// true — the safe way to check</span></pre>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="arrays-basic">
+  <div class="wrap">
+    <span class="kicker">Ordered lists</span>
+    <h3>Arrays (Basics)</h3>
+    
+<p>An <strong>array</strong> is an ordered, zero-indexed list of values. Arrays can hold any mix of types and grow or shrink dynamically.</p>
+<pre><span class="k">const</span> fruits = [<span class="s">"apple"</span>, <span class="s">"banana"</span>, <span class="s">"cherry"</span>];
+fruits[<span class="n">0</span>]        <span class="c">// "apple"  (first)</span>
+fruits[fruits.length - <span class="n">1</span>]  <span class="c">// "cherry" (last)</span>
+fruits.length    <span class="c">// 3</span>
+
+<span class="c">// Adding & removing</span>
+fruits.<span class="f">push</span>(<span class="s">"date"</span>);     <span class="c">// add to END → length 4</span>
+fruits.<span class="f">pop</span>();           <span class="c">// remove from END</span>
+fruits.<span class="f">unshift</span>(<span class="s">"kiwi"</span>);  <span class="c">// add to START</span>
+fruits.<span class="f">shift</span>();         <span class="c">// remove from START</span>
+
+<span class="c">// Useful checks</span>
+fruits.<span class="f">includes</span>(<span class="s">"banana"</span>) <span class="c">// true</span>
+fruits.<span class="f">indexOf</span>(<span class="s">"cherry"</span>)  <span class="c">// 2</span>
+Array.<span class="f">isArray</span>(fruits)     <span class="c">// true</span></pre>
+<div class="note">Arrays are objects under the hood, so a <code class="inl">const</code> array can still be mutated — <code class="inl">const</code> only prevents reassigning the whole array.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="objects-basic">
+  <div class="wrap">
+    <span class="kicker">Key/value structures</span>
+    <h3>Objects (Basics)</h3>
+    
+<p>An <strong>object</strong> stores data as key/value pairs (properties). It's the workhorse structure for modeling real-world things.</p>
+<pre><span class="k">const</span> person = {
+  name: <span class="s">"Ada"</span>,
+  age: <span class="n">36</span>,
+  isAdmin: <span class="k">true</span>,
+  greet() {                  <span class="c">// a method</span>
+    <span class="k">return</span> <span class="s">`Hi, I'm </span>${<span class="k">this</span>.name}<span class="s">`</span>;
+  }
+};
+
+<span class="c">// Two ways to access properties</span>
+person.name          <span class="c">// "Ada"  (dot notation)</span>
+person[<span class="s">"age"</span>]       <span class="c">// 36     (bracket — for dynamic keys)</span>
+person.<span class="f">greet</span>()       <span class="c">// "Hi, I'm Ada"</span>
+
+<span class="c">// Add, change, delete</span>
+person.email = <span class="s">"ada@x.com"</span>;
+person.age = <span class="n">37</span>;
+<span class="k">delete</span> person.isAdmin;</pre>
+<div class="note">Use <strong>dot notation</strong> by default. Use <strong>bracket notation</strong> when the key is stored in a variable or isn't a valid identifier: <code class="inl">person[fieldName]</code>.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="dom-basics">
+  <div class="wrap">
+    <span class="kicker">Touching the page</span>
+    <h3>DOM Basics</h3>
+    
+<p>In the browser, the <strong>DOM (Document Object Model)</strong> is a live, tree-shaped representation of the HTML. JavaScript reads and changes it to make pages interactive.</p>
+<pre><span class="c">// Selecting elements</span>
+<span class="k">const</span> title = document.<span class="f">querySelector</span>(<span class="s">"h1"</span>);
+<span class="k">const</span> all = document.<span class="f">querySelectorAll</span>(<span class="s">".item"</span>);
+<span class="k">const</span> byId = document.<span class="f">getElementById</span>(<span class="s">"menu"</span>);
+
+<span class="c">// Reading & changing content</span>
+title.textContent = <span class="s">"New heading"</span>;
+title.innerHTML = <span class="s">"&lt;em&gt;styled&lt;/em&gt;"</span>;
+title.style.color = <span class="s">"crimson"</span>;
+title.classList.<span class="f">add</span>(<span class="s">"active"</span>);
+title.<span class="f">setAttribute</span>(<span class="s">"data-id"</span>, <span class="s">"42"</span>);
+
+<span class="c">// Responding to a click</span>
+title.<span class="f">addEventListener</span>(<span class="s">"click"</span>, () => {
+  console.<span class="f">log</span>(<span class="s">"Heading clicked!"</span>);
+});</pre>
+<div class="pitfall"><code class="inl">innerHTML</code> with untrusted input opens you to XSS attacks. Prefer <code class="inl">textContent</code> for plain text; sanitize anything dynamic you inject as HTML.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="debugging">
+  <div class="wrap">
+    <span class="kicker">Finding problems</span>
+    <h3>Debugging Basics</h3>
+    
+<p>Every developer spends much of their time debugging. Build these habits early.</p>
+<h4>Console methods</h4>
+<pre>console.<span class="f">log</span>(value);       <span class="c">// general output</span>
+console.<span class="f">error</span>(<span class="s">"broke"</span>);   <span class="c">// red error output</span>
+console.<span class="f">warn</span>(<span class="s">"careful"</span>);  <span class="c">// yellow warning</span>
+console.<span class="f">table</span>(arrayOfObjects); <span class="c">// neat grid</span>
+console.<span class="f">dir</span>(domElement);   <span class="c">// inspect object structure</span>
+console.<span class="f">time</span>(<span class="s">"t"</span>); <span class="c">/* ... */</span> console.<span class="f">timeEnd</span>(<span class="s">"t"</span>); <span class="c">// timing</span></pre>
+<h4>The debugger</h4>
+<p>The <code class="inl">debugger;</code> statement pauses execution where it sits (when DevTools is open), letting you inspect variables step by step. Browser DevTools also let you set breakpoints by clicking line numbers in the Sources panel.</p>
+<div class="note"><strong>Read your errors.</strong> The message and stack trace usually tell you the exact file, line, and nature of the problem. <code class="inl">"x is not a function"</code>, <code class="inl">"Cannot read properties of undefined"</code> — each has a predictable cause you'll learn to recognize.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<div class="level-band" id="intermediate">
+  <div class="wrap">
+    <span class="num">2</span>
+    <h2>Intermediate</h2>
+    <span class="tag" style="color:var(--gold);border-color:var(--gold)">Level 2</span>
+  </div>
+  <div class="wrap"><p class="intro">Now you write JavaScript that's expressive and idiomatic. These topics — array methods, closures, the modern ES6+ toolkit, async basics — are where JavaScript starts to feel powerful instead of just functional.</p></div>
+</div>
+<section class="topic" id="array-methods">
+  <div class="wrap">
+    <span class="kicker">The functional toolkit</span>
+    <h3>Array Iteration Methods</h3>
+    
+<p>These methods replace most manual loops with clear, expressive, chainable operations. They're among the most important things to master in JavaScript.</p>
+<h4>Transforming & filtering</h4>
+<pre><span class="k">const</span> nums = [<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>, <span class="n">4</span>, <span class="n">5</span>];
+
+<span class="c">// map — transform every element, returns a NEW array</span>
+nums.<span class="f">map</span>(n => n * <span class="n">2</span>);        <span class="c">// [2, 4, 6, 8, 10]</span>
+
+<span class="c">// filter — keep elements that pass a test</span>
+nums.<span class="f">filter</span>(n => n % <span class="n">2</span> === <span class="n">0</span>); <span class="c">// [2, 4]</span>
+
+<span class="c">// reduce — boil an array down to one value</span>
+nums.<span class="f">reduce</span>((sum, n) => sum + n, <span class="n">0</span>); <span class="c">// 15</span></pre>
+<h4>Searching & testing</h4>
+<pre>nums.<span class="f">find</span>(n => n > <span class="n">3</span>);     <span class="c">// 4 (first match)</span>
+nums.<span class="f">findIndex</span>(n => n > <span class="n">3</span>);<span class="c">// 3</span>
+nums.<span class="f">some</span>(n => n > <span class="n">4</span>);     <span class="c">// true  (any pass?)</span>
+nums.<span class="f">every</span>(n => n > <span class="n">0</span>);    <span class="c">// true  (all pass?)</span>
+nums.<span class="f">forEach</span>(n => console.<span class="f">log</span>(n)); <span class="c">// side effects only</span></pre>
+<h4>Chaining — the real power</h4>
+<pre><span class="k">const</span> result = [<span class="n">1</span>,<span class="n">2</span>,<span class="n">3</span>,<span class="n">4</span>,<span class="n">5</span>,<span class="n">6</span>]
+  .<span class="f">filter</span>(n => n % <span class="n">2</span> === <span class="n">0</span>)  <span class="c">// [2, 4, 6]</span>
+  .<span class="f">map</span>(n => n * <span class="n">10</span>)          <span class="c">// [20, 40, 60]</span>
+  .<span class="f">reduce</span>((a, b) => a + b);   <span class="c">// 120</span></pre>
+<div class="note"><strong>map vs forEach:</strong> use <code class="inl">map</code> when you want a new array back; use <code class="inl">forEach</code> only for side effects (logging, DOM updates) where the return value doesn't matter.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="array-mutation">
+  <div class="wrap">
+    <span class="kicker">Two families of methods</span>
+    <h3>Mutating vs Non-Mutating</h3>
+    
+<p>Some array methods change the original array (mutating); others return a new one (non-mutating). Knowing which is which prevents subtle bugs.</p>
+<pre><span class="c">// MUTATING — change the original</span>
+arr.<span class="f">push</span>(), arr.<span class="f">pop</span>(), arr.<span class="f">shift</span>(), arr.<span class="f">unshift</span>()
+arr.<span class="f">splice</span>(start, count, ...items)  <span class="c">// remove/insert</span>
+arr.<span class="f">sort</span>(), arr.<span class="f">reverse</span>(), arr.<span class="f">fill</span>()
+
+<span class="c">// NON-MUTATING — return a new array, leave original alone</span>
+arr.<span class="f">slice</span>(start, end)   <span class="c">// extract a portion</span>
+arr.<span class="f">concat</span>(other)       <span class="c">// join arrays</span>
+arr.<span class="f">map</span>(), arr.<span class="f">filter</span>(), [...arr]  <span class="c">// copy</span></pre>
+<h4>sort needs care</h4>
+<pre>[<span class="n">10</span>, <span class="n">1</span>, <span class="n">5</span>].<span class="f">sort</span>();  <span class="c">// [1, 10, 5] — sorts as STRINGS!</span>
+
+<span class="c">// Provide a comparator for numbers:</span>
+[<span class="n">10</span>, <span class="n">1</span>, <span class="n">5</span>].<span class="f">sort</span>((a, b) => a - b);  <span class="c">// [1, 5, 10]</span></pre>
+<div class="pitfall"><code class="inl">sort()</code> and <code class="inl">reverse()</code> mutate in place. If you need the original intact, copy first: <code class="inl">[...arr].sort()</code>. Modern engines also offer non-mutating <code class="inl">toSorted()</code> and <code class="inl">toReversed()</code>.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="destructuring">
+  <div class="wrap">
+    <span class="kicker">Unpacking values</span>
+    <h3>Destructuring</h3>
+    
+<p>Destructuring extracts values from arrays and objects into variables with concise syntax. You'll use it constantly.</p>
+<pre><span class="c">// Array destructuring — by position</span>
+<span class="k">const</span> [first, second] = [<span class="s">"a"</span>, <span class="s">"b"</span>, <span class="s">"c"</span>];
+<span class="c">// first = "a", second = "b"</span>
+
+<span class="k">const</span> [head, ...tail] = [<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>, <span class="n">4</span>];
+<span class="c">// head = 1, tail = [2, 3, 4]</span>
+
+<span class="c">// Object destructuring — by key</span>
+<span class="k">const</span> { name, age } = person;
+
+<span class="c">// Rename + default values</span>
+<span class="k">const</span> { name: userName, role = <span class="s">"guest"</span> } = person;
+
+<span class="c">// In function parameters — very common</span>
+<span class="k">function</span> <span class="f">draw</span>({ x, y, color = <span class="s">"black"</span> }) {
+  <span class="c">/* ... */</span>
+}
+<span class="f">draw</span>({ x: <span class="n">10</span>, y: <span class="n">20</span> });
+
+<span class="c">// Swap variables with no temp</span>
+<span class="k">let</span> a = <span class="n">1</span>, b = <span class="n">2</span>;
+[a, b] = [b, a];</pre>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="spread-rest">
+  <div class="wrap">
+    <span class="kicker">The ... operator</span>
+    <h3>Spread & Rest</h3>
+    
+<p>The three-dot <code class="inl">...</code> operator does two opposite jobs depending on context: <strong>spread</strong> expands; <strong>rest</strong> collects.</p>
+<h4>Spread — expand into elements</h4>
+<pre><span class="c">// Copy & merge arrays</span>
+<span class="k">const</span> combined = [...arr1, ...arr2];
+<span class="k">const</span> copy = [...original];   <span class="c">// shallow copy</span>
+
+<span class="c">// Copy & merge objects (later keys win)</span>
+<span class="k">const</span> merged = { ...defaults, ...overrides };
+<span class="k">const</span> updated = { ...user, age: <span class="n">31</span> };
+
+<span class="c">// Pass array as individual arguments</span>
+Math.<span class="f">max</span>(...[<span class="n">3</span>, <span class="n">7</span>, <span class="n">2</span>]);  <span class="c">// 7</span></pre>
+<h4>Rest — collect into one</h4>
+<pre><span class="k">function</span> <span class="f">log</span>(first, ...others) {
+  <span class="c">// others is an array of remaining args</span>
+}
+<span class="k">const</span> { id, ...rest } = bigObject; <span class="c">// pull off id, keep the rest</span></pre>
+<div class="pitfall"><strong>Shallow copy:</strong> spread copies only one level deep. Nested objects/arrays are still shared by reference. For deep copies use <code class="inl">structuredClone(obj)</code>.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="object-methods">
+  <div class="wrap">
+    <span class="kicker">Working with objects</span>
+    <h3>Object Methods & Iteration</h3>
+    
+<p>The <code class="inl">Object</code> constructor provides static methods for inspecting and transforming objects.</p>
+<pre><span class="k">const</span> user = { name: <span class="s">"Ada"</span>, age: <span class="n">36</span>, role: <span class="s">"dev"</span> };
+
+Object.<span class="f">keys</span>(user)    <span class="c">// ["name", "age", "role"]</span>
+Object.<span class="f">values</span>(user)  <span class="c">// ["Ada", 36, "dev"]</span>
+Object.<span class="f">entries</span>(user) <span class="c">// [["name","Ada"], ["age",36], ...]</span>
+
+<span class="c">// Iterate an object cleanly</span>
+<span class="k">for</span> (<span class="k">const</span> [key, value] <span class="k">of</span> Object.<span class="f">entries</span>(user)) {
+  console.<span class="f">log</span>(<span class="s">`</span>${key}<span class="s">: </span>${value}<span class="s">`</span>);
+}
+
+<span class="c">// Build an object from entries (reverse of above)</span>
+Object.<span class="f">fromEntries</span>([[<span class="s">"a"</span>, <span class="n">1</span>], [<span class="s">"b"</span>, <span class="n">2</span>]]); <span class="c">// {a:1, b:2}</span>
+
+<span class="c">// Merge / copy</span>
+Object.<span class="f">assign</span>({}, target, source);
+<span class="c">// freeze to make read-only</span>
+Object.<span class="f">freeze</span>(config);</pre>
+<h4>Shorthand & computed keys</h4>
+<pre><span class="k">const</span> name = <span class="s">"Sam"</span>, age = <span class="n">22</span>;
+<span class="k">const</span> obj = { name, age };  <span class="c">// {name:"Sam", age:22}</span>
+
+<span class="k">const</span> key = <span class="s">"score"</span>;
+<span class="k">const</span> data = { [key]: <span class="n">100</span> };  <span class="c">// {score: 100}</span></pre>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="arrow-functions">
+  <div class="wrap">
+    <span class="kicker">Concise & lexical this</span>
+    <h3>Arrow Functions</h3>
+    
+<p>Arrow functions offer shorter syntax and — crucially — do not bind their own <code class="inl">this</code>. They inherit it from the surrounding scope.</p>
+<pre><span class="c">// Full → concise progression</span>
+<span class="k">const</span> add = <span class="k">function</span>(a, b) { <span class="k">return</span> a + b; };
+<span class="k">const</span> add2 = (a, b) => { <span class="k">return</span> a + b; };
+<span class="k">const</span> add3 = (a, b) => a + b;      <span class="c">// implicit return</span>
+<span class="k">const</span> double = n => n * <span class="n">2</span>;       <span class="c">// one param, no parens</span>
+<span class="k">const</span> rand = () => Math.<span class="f">random</span>(); <span class="c">// no params</span>
+
+<span class="c">// Returning an object literal needs parens</span>
+<span class="k">const</span> make = id => ({ id, active: <span class="k">true</span> });</pre>
+<h4>The this difference</h4>
+<pre><span class="k">const</span> timer = {
+  seconds: <span class="n">0</span>,
+  <span class="f">start</span>() {
+    <span class="f">setInterval</span>(() => {
+      <span class="k">this</span>.seconds++;  <span class="c">// ✅ "this" is the timer object</span>
+    }, <span class="n">1000</span>);
+  }
+};</pre>
+<div class="pitfall">Don't use arrow functions as object <strong>methods</strong> if they need <code class="inl">this</code> to refer to the object, or as constructors (they can't be used with <code class="inl">new</code>). Their lack of own <code class="inl">this</code> is a feature in callbacks but a trap in methods.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="closures">
+  <div class="wrap">
+    <span class="kicker">Functions remembering scope</span>
+    <h3>Closures</h3>
+    
+<p>A <strong>closure</strong> is a function that "remembers" the variables from the scope where it was created, even after that scope has finished. This is one of JavaScript's most powerful and most-asked-about concepts.</p>
+<pre><span class="k">function</span> <span class="f">makeCounter</span>() {
+  <span class="k">let</span> count = <span class="n">0</span>;        <span class="c">// private variable</span>
+  <span class="k">return</span> <span class="k">function</span>() {
+    count++;             <span class="c">// closes over `count`</span>
+    <span class="k">return</span> count;
+  };
+}
+
+<span class="k">const</span> counter = <span class="f">makeCounter</span>();
+<span class="f">counter</span>();  <span class="c">// 1</span>
+<span class="f">counter</span>();  <span class="c">// 2  — remembers count between calls</span>
+
+<span class="k">const</span> other = <span class="f">makeCounter</span>();
+<span class="f">other</span>();    <span class="c">// 1  — independent closure</span></pre>
+<h4>Why it matters</h4>
+<ul>
+<li><strong>Data privacy</strong> — <code class="inl">count</code> can't be accessed or tampered with from outside.</li>
+<li><strong>Factories</strong> — generate customized functions.</li>
+<li><strong>Callbacks & event handlers</strong> rely on closures to access surrounding state.</li>
+</ul>
+<pre><span class="c">// A configurable function factory</span>
+<span class="k">function</span> <span class="f">multiplier</span>(factor) {
+  <span class="k">return</span> n => n * factor;  <span class="c">// closes over `factor`</span>
+}
+<span class="k">const</span> triple = <span class="f">multiplier</span>(<span class="n">3</span>);
+<span class="f">triple</span>(<span class="n">10</span>);  <span class="c">// 30</span></pre>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="this-keyword">
+  <div class="wrap">
+    <span class="kicker">Context binding</span>
+    <h3>The this Keyword</h3>
+    
+<p><code class="inl">this</code> refers to the object a function is operating on — but what it points to depends on <em>how the function is called</em>, not where it's defined. This trips up many learners.</p>
+<pre><span class="c">// 1. Method call → this is the object before the dot</span>
+<span class="k">const</span> obj = { name: <span class="s">"Ada"</span>, <span class="f">hi</span>() { <span class="k">return</span> <span class="k">this</span>.name; } };
+obj.<span class="f">hi</span>();  <span class="c">// "Ada" — this === obj</span>
+
+<span class="c">// 2. Plain call → undefined (strict) or global object</span>
+<span class="k">const</span> fn = obj.hi;
+<span class="f">fn</span>();      <span class="c">// undefined — lost its context!</span>
+
+<span class="c">// 3. Arrow → inherits this from enclosing scope</span>
+<span class="c">// 4. Constructor (new) → the new instance</span></pre>
+<h4>Controlling this explicitly</h4>
+<pre><span class="k">function</span> <span class="f">greet</span>(greeting) { <span class="k">return</span> greeting + <span class="s">" "</span> + <span class="k">this</span>.name; }
+<span class="k">const</span> p = { name: <span class="s">"Sam"</span> };
+
+<span class="f">greet</span>.<span class="f">call</span>(p, <span class="s">"Hi"</span>);      <span class="c">// "Hi Sam" — call now, args listed</span>
+<span class="f">greet</span>.<span class="f">apply</span>(p, [<span class="s">"Hey"</span>]);   <span class="c">// "Hey Sam" — call now, args array</span>
+<span class="k">const</span> bound = <span class="f">greet</span>.<span class="f">bind</span>(p); <span class="c">// returns a new bound function</span>
+<span class="f">bound</span>(<span class="s">"Yo"</span>);              <span class="c">// "Yo Sam"</span></pre>
+<div class="note"><strong>call/apply/bind</strong> all set <code class="inl">this</code> manually. <code class="inl">call</code> and <code class="inl">apply</code> invoke immediately (differing only in how args are passed); <code class="inl">bind</code> returns a new function for later.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="es6-features">
+  <div class="wrap">
+    <span class="kicker">The modern toolkit</span>
+    <h3>ES6+ Essentials</h3>
+    
+<p>ES6 (2015) and yearly updates since transformed JavaScript. Beyond <code class="inl">let</code>/<code class="inl">const</code>, arrows, destructuring, and template literals (covered already), these features are everyday tools.</p>
+<pre><span class="c">// Optional chaining — safe deep access</span>
+user?.address?.city   <span class="c">// undefined instead of throwing</span>
+
+<span class="c">// Nullish coalescing — default only for null/undefined</span>
+<span class="k">const</span> port = config.port ?? <span class="n">3000</span>;
+<span class="c">// (?? differs from || : 0 and "" are kept, not replaced)</span>
+
+<span class="c">// Logical assignment</span>
+x ??= <span class="n">10</span>;   <span class="c">// assign if x is null/undefined</span>
+y ||= <span class="n">5</span>;    <span class="c">// assign if y is falsy</span>
+
+<span class="c">// Array/string includes</span>
+[<span class="n">1</span>,<span class="n">2</span>,<span class="n">3</span>].<span class="f">includes</span>(<span class="n">2</span>);  <span class="c">// true</span>
+
+<span class="c">// Numeric separators for readability</span>
+<span class="k">const</span> billion = <span class="n">1_000_000_000</span>;</pre>
+<div class="note"><strong>?? vs ||:</strong> Use <code class="inl">??</code> when <code class="inl">0</code>, <code class="inl">""</code>, or <code class="inl">false</code> are valid values you want to keep. Use <code class="inl">||</code> when any falsy value should trigger the default.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="modules">
+  <div class="wrap">
+    <span class="kicker">Organizing code in files</span>
+    <h3>Modules</h3>
+    
+<p>Modules split code across files with explicit <code class="inl">import</code>/<code class="inl">export</code>. Each module has its own scope — no more polluting the global namespace.</p>
+<pre><span class="c">// ── math.js ──</span>
+<span class="k">export</span> <span class="k">const</span> PI = <span class="n">3.14159</span>;
+<span class="k">export</span> <span class="k">function</span> <span class="f">add</span>(a, b) { <span class="k">return</span> a + b; }
+<span class="k">export</span> <span class="k">default</span> <span class="k">function</span> <span class="f">multiply</span>(a, b) { <span class="k">return</span> a * b; }
+
+<span class="c">// ── app.js ──</span>
+<span class="k">import</span> multiply, { PI, add } <span class="k">from</span> <span class="s">"./math.js"</span>;
+<span class="k">import</span> * <span class="k">as</span> math <span class="k">from</span> <span class="s">"./math.js"</span>;  <span class="c">// namespace</span>
+<span class="k">import</span> { add <span class="k">as</span> sum } <span class="k">from</span> <span class="s">"./math.js"</span>; <span class="c">// rename</span></pre>
+<ul>
+<li><strong>Named exports</strong> — any number per file, imported by exact name in braces.</li>
+<li><strong>Default export</strong> — one per file, imported with any name, no braces.</li>
+</ul>
+<div class="note">In the browser, load a module with <code class="inl">&lt;script type="module" src="app.js"&gt;</code>. Modules are deferred and run in strict mode automatically. Node.js supports them via <code class="inl">.mjs</code> files or <code class="inl">"type":"module"</code> in package.json.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="error-handling">
+  <div class="wrap">
+    <span class="kicker">Dealing with failure</span>
+    <h3>Error Handling</h3>
+    
+<p>Robust programs anticipate failure. The <code class="inl">try/catch/finally</code> construct catches errors so your program can recover instead of crashing.</p>
+<pre><span class="k">try</span> {
+  <span class="k">const</span> data = JSON.<span class="f">parse</span>(userInput);  <span class="c">// might throw</span>
+  <span class="f">process</span>(data);
+} <span class="k">catch</span> (err) {
+  console.<span class="f">error</span>(<span class="s">"Failed:"</span>, err.message);
+  <span class="c">// handle / log / show friendly message</span>
+} <span class="k">finally</span> {
+  <span class="c">// always runs — cleanup, close resources</span>
+  spinner.<span class="f">hide</span>();
+}</pre>
+<h4>Throwing your own errors</h4>
+<pre><span class="k">function</span> <span class="f">withdraw</span>(amount, balance) {
+  <span class="k">if</span> (amount > balance) {
+    <span class="k">throw</span> <span class="k">new</span> <span class="f">Error</span>(<span class="s">"Insufficient funds"</span>);
+  }
+  <span class="k">return</span> balance - amount;
+}
+
+<span class="c">// Custom error types</span>
+<span class="k">class</span> <span class="f">ValidationError</span> <span class="k">extends</span> Error {
+  <span class="f">constructor</span>(msg, field) {
+    <span class="k">super</span>(msg);
+    <span class="k">this</span>.name = <span class="s">"ValidationError"</span>;
+    <span class="k">this</span>.field = field;
+  }
+}</pre>
+<div class="pitfall">Don't swallow errors with an empty <code class="inl">catch {}</code>. At minimum log them. Catch only what you can meaningfully handle; let truly unexpected errors surface during development.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="dom-events">
+  <div class="wrap">
+    <span class="kicker">Interactive pages</span>
+    <h3>DOM Events & Manipulation</h3>
+    
+<p>Beyond basic selection, real apps create, modify, and respond to elements dynamically.</p>
+<h4>Events</h4>
+<pre>button.<span class="f">addEventListener</span>(<span class="s">"click"</span>, (event) => {
+  event.<span class="f">preventDefault</span>();    <span class="c">// stop default behavior</span>
+  event.<span class="f">stopPropagation</span>();  <span class="c">// stop bubbling up</span>
+  console.<span class="f">log</span>(event.target);  <span class="c">// element that fired it</span>
+});
+
+<span class="c">// Common events: click, input, change, submit,</span>
+<span class="c">// keydown, mouseover, focus, blur, scroll, load</span></pre>
+<h4>Event delegation</h4>
+<p>Instead of attaching listeners to many children, attach one to the parent and inspect <code class="inl">event.target</code>. Efficient and works for elements added later.</p>
+<pre>list.<span class="f">addEventListener</span>(<span class="s">"click"</span>, (e) => {
+  <span class="k">if</span> (e.target.matches(<span class="s">"li"</span>)) {
+    console.<span class="f">log</span>(<span class="s">"Clicked:"</span>, e.target.textContent);
+  }
+});</pre>
+<h4>Creating & inserting elements</h4>
+<pre><span class="k">const</span> li = document.<span class="f">createElement</span>(<span class="s">"li"</span>);
+li.textContent = <span class="s">"New item"</span>;
+list.<span class="f">append</span>(li);          <span class="c">// add as last child</span>
+li.<span class="f">remove</span>();             <span class="c">// delete it</span></pre>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="json">
+  <div class="wrap">
+    <span class="kicker">Data interchange</span>
+    <h3>JSON</h3>
+    
+<p><strong>JSON</strong> (JavaScript Object Notation) is the universal format for sending structured data between systems. It looks like JavaScript objects but is plain text following strict rules.</p>
+<pre><span class="c">// Object → JSON string (for sending/storing)</span>
+<span class="k">const</span> user = { name: <span class="s">"Ada"</span>, roles: [<span class="s">"admin"</span>], active: <span class="k">true</span> };
+<span class="k">const</span> json = JSON.<span class="f">stringify</span>(user);
+<span class="c">// '{"name":"Ada","roles":["admin"],"active":true}'</span>
+
+<span class="c">// Pretty-print with indentation</span>
+JSON.<span class="f">stringify</span>(user, <span class="k">null</span>, <span class="n">2</span>);
+
+<span class="c">// JSON string → object (for receiving/reading)</span>
+<span class="k">const</span> obj = JSON.<span class="f">parse</span>(json);
+obj.name;  <span class="c">// "Ada"</span></pre>
+<h4>JSON rules</h4>
+<ul>
+<li>Keys must be in double quotes</li>
+<li>Values: string, number, boolean, null, array, object only</li>
+<li>No functions, no <code class="inl">undefined</code>, no comments, no trailing commas</li>
+</ul>
+<div class="pitfall"><code class="inl">JSON.parse</code> throws on malformed input — always wrap it in try/catch when parsing untrusted data. <code class="inl">JSON.stringify</code> silently drops functions and <code class="inl">undefined</code> values.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="timers-async">
+  <div class="wrap">
+    <span class="kicker">Scheduling work</span>
+    <h3>Timers & Async Basics</h3>
+    
+<p>JavaScript can schedule code to run later. This is your first taste of asynchronous programming — code that doesn't run top-to-bottom.</p>
+<pre><span class="c">// Run once after a delay (milliseconds)</span>
+<span class="k">const</span> id = <span class="f">setTimeout</span>(() => {
+  console.<span class="f">log</span>(<span class="s">"2 seconds later"</span>);
+}, <span class="n">2000</span>);
+<span class="f">clearTimeout</span>(id);  <span class="c">// cancel before it fires</span>
+
+<span class="c">// Run repeatedly</span>
+<span class="k">const</span> tick = <span class="f">setInterval</span>(() => {
+  console.<span class="f">log</span>(<span class="s">"every second"</span>);
+}, <span class="n">1000</span>);
+<span class="f">clearInterval</span>(tick);  <span class="c">// stop it</span></pre>
+<h4>Why "async"?</h4>
+<p>JavaScript is single-threaded, but timers, network requests, and user events don't block. They're handed off and their callbacks run later when the main thread is free. Understanding this leads directly to the event loop and Promises.</p>
+<pre>console.<span class="f">log</span>(<span class="s">"A"</span>);
+<span class="f">setTimeout</span>(() => console.<span class="f">log</span>(<span class="s">"B"</span>), <span class="n">0</span>);
+console.<span class="f">log</span>(<span class="s">"C"</span>);
+<span class="c">// Prints: A, C, B  — even with 0ms delay!</span></pre>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="regex">
+  <div class="wrap">
+    <span class="kicker">Pattern matching</span>
+    <h3>Regular Expressions</h3>
+    
+<p><strong>Regular expressions</strong> (regex) describe text patterns for searching, validating, and replacing. Dense but immensely powerful.</p>
+<pre><span class="k">const</span> pattern = /\d+/g;   <span class="c">// one or more digits, global</span>
+
+<span class="s">"abc123def456"</span>.<span class="f">match</span>(/\d+/g);  <span class="c">// ["123", "456"]</span>
+/^\d+$/.<span class="f">test</span>(<span class="s">"12345"</span>);          <span class="c">// true (all digits?)</span>
+<span class="s">"hello world"</span>.<span class="f">replace</span>(/o/g, <span class="s">"0"</span>); <span class="c">// "hell0 w0rld"</span></pre>
+<h4>Common building blocks</h4>
+<ul>
+<li><code class="inl">\d</code> digit, <code class="inl">\w</code> word char, <code class="inl">\s</code> whitespace, <code class="inl">.</code> any char</li>
+<li><code class="inl">*</code> 0+, <code class="inl">+</code> 1+, <code class="inl">?</code> 0 or 1, <code class="inl">{2,4}</code> range</li>
+<li><code class="inl">^</code> start, <code class="inl">$</code> end, <code class="inl">[abc]</code> set, <code class="inl">(...)</code> group, <code class="inl">|</code> or</li>
+<li>Flags: <code class="inl">g</code> global, <code class="inl">i</code> case-insensitive, <code class="inl">m</code> multiline</li>
+</ul>
+<pre><span class="c">// A simple email-ish check (real validation is harder!)</span>
+<span class="k">const</span> email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+email.<span class="f">test</span>(<span class="s">"a@b.com"</span>);  <span class="c">// true</span></pre>
+<div class="note">Regex is a deep topic. Tools like regex101.com let you build and test patterns interactively with live explanations — invaluable while learning.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="date-time">
+  <div class="wrap">
+    <span class="kicker">Working with time</span>
+    <h3>Dates & Time</h3>
+    
+<p>The built-in <code class="inl">Date</code> object handles dates and times — though it's notoriously awkward, so many projects reach for libraries.</p>
+<pre><span class="k">const</span> now = <span class="k">new</span> <span class="f">Date</span>();           <span class="c">// current moment</span>
+<span class="k">const</span> specific = <span class="k">new</span> <span class="f">Date</span>(<span class="s">"2025-06-14"</span>);
+<span class="k">const</span> fromParts = <span class="k">new</span> <span class="f">Date</span>(<span class="n">2025</span>, <span class="n">5</span>, <span class="n">14</span>); <span class="c">// month is 0-indexed!</span>
+
+now.<span class="f">getFullYear</span>();   <span class="c">// 2026</span>
+now.<span class="f">getMonth</span>();      <span class="c">// 0–11 (Jan = 0)</span>
+now.<span class="f">getDate</span>();       <span class="c">// day of month 1–31</span>
+now.<span class="f">getDay</span>();        <span class="c">// day of week 0–6 (Sun = 0)</span>
+now.<span class="f">getTime</span>();       <span class="c">// ms since Jan 1 1970 (epoch)</span>
+
+now.<span class="f">toISOString</span>();   <span class="c">// "2026-06-14T..." standard format</span>
+now.<span class="f">toLocaleDateString</span>(); <span class="c">// locale-aware</span></pre>
+<div class="pitfall"><strong>Month is zero-indexed</strong> (January is 0, December is 11) — an endless source of bugs. For serious date work, consider <code class="inl">date-fns</code>, <code class="inl">Day.js</code>, or the newer built-in <code class="inl">Temporal</code> API as it lands.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<div class="level-band" id="advanced">
+  <div class="wrap">
+    <span class="num">3</span>
+    <h2>Advanced</h2>
+    <span class="tag" style="color:var(--rust);border-color:var(--rust)">Level 3</span>
+  </div>
+  <div class="wrap"><p class="intro">The concepts that separate competent from expert. Asynchronous flow, the engine's inner workings, prototypes, the functional and object-oriented depths, and the performance know-how that production code demands.</p></div>
+</div>
+<section class="topic" id="promises">
+  <div class="wrap">
+    <span class="kicker">Taming the async</span>
+    <h3>Promises</h3>
+    
+<p>A <strong>Promise</strong> represents a value that will be available later — the result of an async operation. It's an object in one of three states: <em>pending</em>, <em>fulfilled</em>, or <em>rejected</em>.</p>
+<pre><span class="k">const</span> promise = <span class="k">new</span> <span class="f">Promise</span>((resolve, reject) => {
+  <span class="f">setTimeout</span>(() => {
+    <span class="k">const</span> ok = Math.<span class="f">random</span>() > <span class="n">0.5</span>;
+    ok ? <span class="f">resolve</span>(<span class="s">"Success!"</span>) : <span class="f">reject</span>(<span class="k">new</span> <span class="f">Error</span>(<span class="s">"Failed"</span>));
+  }, <span class="n">1000</span>);
+});
+
+promise
+  .<span class="f">then</span>(result => console.<span class="f">log</span>(result))
+  .<span class="f">catch</span>(err => console.<span class="f">error</span>(err))
+  .<span class="f">finally</span>(() => console.<span class="f">log</span>(<span class="s">"done"</span>));</pre>
+<h4>Combining promises</h4>
+<pre><span class="c">// Wait for ALL (fails if any fails)</span>
+<span class="k">const</span> [a, b] = <span class="k">await</span> Promise.<span class="f">all</span>([fetchA(), fetchB()]);
+
+<span class="c">// All settle, success or failure</span>
+<span class="k">await</span> Promise.<span class="f">allSettled</span>([p1, p2]);
+
+<span class="c">// First to finish wins</span>
+<span class="k">await</span> Promise.<span class="f">race</span>([slow(), timeout()]);
+
+<span class="c">// First to SUCCEED</span>
+<span class="k">await</span> Promise.<span class="f">any</span>([mirror1(), mirror2()]);</pre>
+<div class="note">Promises chain: each <code class="inl">.then()</code> returns a new promise, so you can sequence async steps without deeply nested callbacks ("callback hell").</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="async-await">
+  <div class="wrap">
+    <span class="kicker">Synchronous-looking async</span>
+    <h3>async / await</h3>
+    
+<p><code class="inl">async/await</code> is syntactic sugar over promises that lets asynchronous code read like ordinary sequential code. It's the modern default.</p>
+<pre><span class="k">async</span> <span class="k">function</span> <span class="f">loadUser</span>(id) {
+  <span class="k">try</span> {
+    <span class="k">const</span> res = <span class="k">await</span> <span class="f">fetch</span>(<span class="s">`/users/</span>${id}<span class="s">`</span>);
+    <span class="k">if</span> (!res.ok) <span class="k">throw</span> <span class="k">new</span> <span class="f">Error</span>(res.status);
+    <span class="k">const</span> user = <span class="k">await</span> res.<span class="f">json</span>();
+    <span class="k">return</span> user;
+  } <span class="k">catch</span> (err) {
+    console.<span class="f">error</span>(<span class="s">"Load failed:"</span>, err);
+    <span class="k">throw</span> err;  <span class="c">// re-throw or return a fallback</span>
+  }
+}
+
+<span class="c">// Calling it (also async context)</span>
+<span class="k">const</span> user = <span class="k">await</span> <span class="f">loadUser</span>(<span class="n">42</span>);</pre>
+<ul>
+<li>Any function marked <code class="inl">async</code> returns a promise automatically.</li>
+<li><code class="inl">await</code> pauses the function until the promise settles, then resumes with its value.</li>
+<li>Use ordinary <code class="inl">try/catch</code> for errors — much cleaner than <code class="inl">.catch()</code>.</li>
+</ul>
+<div class="pitfall"><strong>Don't serialize independent awaits.</strong> <code class="inl">await a(); await b();</code> runs them one after another. If they're independent, run in parallel: <code class="inl">await Promise.all([a(), b()])</code>.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="event-loop">
+  <div class="wrap">
+    <span class="kicker">How async really works</span>
+    <h3>The Event Loop</h3>
+    
+<p>JavaScript is single-threaded yet handles concurrency. The <strong>event loop</strong> is the mechanism that makes this possible — essential knowledge for an expert.</p>
+<h4>The pieces</h4>
+<ul>
+<li><strong>Call stack</strong> — where functions execute, one at a time.</li>
+<li><strong>Web APIs / host</strong> — timers, fetch, DOM events run outside the engine.</li>
+<li><strong>Task queue (macrotasks)</strong> — callbacks from setTimeout, events, I/O.</li>
+<li><strong>Microtask queue</strong> — promise callbacks, queueMicrotask, with higher priority.</li>
+</ul>
+<p>The loop: run all stack work → drain <em>all</em> microtasks → take <em>one</em> macrotask → repeat. Microtasks always finish before the next macrotask.</p>
+<pre>console.<span class="f">log</span>(<span class="s">"1"</span>);                          <span class="c">// sync</span>
+<span class="f">setTimeout</span>(() => console.<span class="f">log</span>(<span class="s">"2"</span>), <span class="n">0</span>);  <span class="c">// macrotask</span>
+Promise.<span class="f">resolve</span>().<span class="f">then</span>(() => console.<span class="f">log</span>(<span class="s">"3"</span>)); <span class="c">// microtask</span>
+console.<span class="f">log</span>(<span class="s">"4"</span>);                          <span class="c">// sync</span>
+
+<span class="c">// Output: 1, 4, 3, 2</span>
+<span class="c">// sync first, then microtask (3), then macrotask (2)</span></pre>
+<div class="note">This ordering explains countless "why did this run before that?" mysteries. The key takeaway: promise callbacks jump ahead of setTimeout, every time.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="fetch-api">
+  <div class="wrap">
+    <span class="kicker">Talking to servers</span>
+    <h3>Fetch & HTTP</h3>
+    
+<p>The <code class="inl">fetch</code> API makes HTTP requests to load data from and send data to servers. It returns a promise and is the modern replacement for XMLHttpRequest.</p>
+<pre><span class="c">// GET request</span>
+<span class="k">const</span> res = <span class="k">await</span> <span class="f">fetch</span>(<span class="s">"https://api.example.com/users"</span>);
+<span class="k">const</span> data = <span class="k">await</span> res.<span class="f">json</span>();
+
+<span class="c">// POST with a JSON body</span>
+<span class="k">const</span> res2 = <span class="k">await</span> <span class="f">fetch</span>(<span class="s">"/api/users"</span>, {
+  method: <span class="s">"POST"</span>,
+  headers: { <span class="s">"Content-Type"</span>: <span class="s">"application/json"</span> },
+  body: JSON.<span class="f">stringify</span>({ name: <span class="s">"Ada"</span> })
+});</pre>
+<h4>Handling responses properly</h4>
+<pre><span class="k">async</span> <span class="k">function</span> <span class="f">getData</span>(url) {
+  <span class="k">const</span> res = <span class="k">await</span> <span class="f">fetch</span>(url);
+  <span class="c">// fetch only rejects on network failure —</span>
+  <span class="c">// you must check status yourself!</span>
+  <span class="k">if</span> (!res.ok) {
+    <span class="k">throw</span> <span class="k">new</span> <span class="f">Error</span>(<span class="s">`HTTP </span>${res.status}<span class="s">`</span>);
+  }
+  <span class="k">return</span> res.<span class="f">json</span>();
+}</pre>
+<div class="pitfall"><strong>fetch doesn't reject on 404 or 500.</strong> A response arrived, so the promise fulfills. Always check <code class="inl">res.ok</code> or <code class="inl">res.status</code> before treating the response as success.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="prototypes">
+  <div class="wrap">
+    <span class="kicker">JS's object model</span>
+    <h3>Prototypes & Inheritance</h3>
+    
+<p>JavaScript inheritance is <strong>prototypal</strong>: objects link to other objects (their prototype) and inherit properties through that chain. Classes are syntax sugar over this.</p>
+<pre><span class="k">const</span> animal = {
+  <span class="f">speak</span>() { <span class="k">return</span> <span class="s">`</span>${<span class="k">this</span>.name}<span class="s"> makes a sound`</span>; }
+};
+
+<span class="c">// Create an object whose prototype is `animal`</span>
+<span class="k">const</span> dog = Object.<span class="f">create</span>(animal);
+dog.name = <span class="s">"Rex"</span>;
+dog.<span class="f">speak</span>();  <span class="c">// "Rex makes a sound" — found via prototype</span></pre>
+<h4>The prototype chain</h4>
+<p>When you access a property, the engine looks on the object itself, then its prototype, then <em>its</em> prototype, up to <code class="inl">Object.prototype</code> and finally <code class="inl">null</code>. This chain is how methods like <code class="inl">.toString()</code> are available everywhere.</p>
+<pre>Object.<span class="f">getPrototypeOf</span>(dog) === animal;  <span class="c">// true</span>
+dog.<span class="f">hasOwnProperty</span>(<span class="s">"name"</span>);  <span class="c">// true — own, not inherited</span>
+<span class="s">"speak"</span> <span class="k">in</span> dog;             <span class="c">// true — own OR inherited</span></pre>
+<div class="note">Every function has a <code class="inl">.prototype</code> object; every instance created with <code class="inl">new</code> links to it. This is the machinery classes hide.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="classes">
+  <div class="wrap">
+    <span class="kicker">OOP syntax</span>
+    <h3>Classes</h3>
+    
+<p>Classes provide clean syntax for creating objects and inheritance, built on top of prototypes.</p>
+<pre><span class="k">class</span> <span class="f">Animal</span> {
+  <span class="f">constructor</span>(name) {
+    <span class="k">this</span>.name = name;        <span class="c">// instance property</span>
+  }
+  <span class="f">speak</span>() {                    <span class="c">// shared via prototype</span>
+    <span class="k">return</span> <span class="s">`</span>${<span class="k">this</span>.name}<span class="s"> speaks`</span>;
+  }
+  <span class="k">static</span> <span class="f">create</span>(name) {        <span class="c">// called on class itself</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="f">Animal</span>(name);
+  }
+}
+
+<span class="k">class</span> <span class="f">Dog</span> <span class="k">extends</span> Animal {
+  <span class="f">constructor</span>(name, breed) {
+    <span class="k">super</span>(name);             <span class="c">// call parent constructor</span>
+    <span class="k">this</span>.breed = breed;
+  }
+  <span class="f">speak</span>() {                    <span class="c">// override</span>
+    <span class="k">return</span> <span class="s">`</span>${<span class="k">this</span>.name}<span class="s"> barks`</span>;
+  }
+}
+
+<span class="k">const</span> rex = <span class="k">new</span> <span class="f">Dog</span>(<span class="s">"Rex"</span>, <span class="s">"Lab"</span>);
+rex.<span class="f">speak</span>();  <span class="c">// "Rex barks"</span></pre>
+<h4>Modern class features</h4>
+<pre><span class="k">class</span> <span class="f">Counter</span> {
+  #count = <span class="n">0</span>;           <span class="c">// private field (# prefix)</span>
+  static label = <span class="s">"counter"</span>; <span class="c">// static field</span>
+
+  <span class="k">get</span> <span class="f">value</span>() { <span class="k">return</span> <span class="k">this</span>.#count; } <span class="c">// getter</span>
+  <span class="f">increment</span>() { <span class="k">this</span>.#count++; }
+}</pre>
+<div class="note"><code class="inl">#private</code> fields are truly inaccessible outside the class — real encapsulation, unlike the old underscore convention.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="functional">
+  <div class="wrap">
+    <span class="kicker">Pure & composable</span>
+    <h3>Functional Programming</h3>
+    
+<p>Functional programming (FP) emphasizes pure functions, immutability, and composition. JavaScript supports it well, and FP ideas make code more predictable and testable.</p>
+<h4>Pure functions</h4>
+<p>A pure function returns the same output for the same input and causes no side effects (no mutation, no I/O, no globals).</p>
+<pre><span class="c">// Pure ✅</span>
+<span class="k">const</span> add = (a, b) => a + b;
+
+<span class="c">// Impure ❌ (mutates external state)</span>
+<span class="k">let</span> total = <span class="n">0</span>;
+<span class="k">const</span> addToTotal = n => { total += n; };</pre>
+<h4>Immutability</h4>
+<pre><span class="c">// Don't mutate — create new values</span>
+<span class="k">const</span> updated = { ...user, age: <span class="n">31</span> };
+<span class="k">const</span> withItem = [...list, newItem];
+<span class="k">const</span> withoutFirst = list.<span class="f">slice</span>(<span class="n">1</span>);</pre>
+<h4>Composition</h4>
+<pre><span class="k">const</span> compose = (...fns) => x =>
+  fns.<span class="f">reduceRight</span>((acc, fn) => <span class="f">fn</span>(acc), x);
+
+<span class="k">const</span> shout = compose(
+  s => s + <span class="s">"!"</span>,
+  s => s.<span class="f">toUpperCase</span>()
+);
+<span class="f">shout</span>(<span class="s">"hi"</span>);  <span class="c">// "HI!"</span></pre>
+<div class="note">Higher-order functions (functions that take or return functions) are FP's backbone — <code class="inl">map</code>, <code class="inl">filter</code>, <code class="inl">reduce</code>, and your own factories all qualify.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="advanced-closures">
+  <div class="wrap">
+    <span class="kicker">Closure patterns</span>
+    <h3>Currying & Memoization</h3>
+    
+<p>Several powerful patterns build directly on closures.</p>
+<h4>Currying</h4>
+<p>Transform a multi-argument function into a chain of single-argument functions — useful for specialization and composition.</p>
+<pre><span class="k">const</span> curry = fn => a => b => c => <span class="f">fn</span>(a, b, c);
+
+<span class="k">const</span> volume = curry((l, w, h) => l * w * h);
+volume(<span class="n">2</span>)(<span class="n">3</span>)(<span class="n">4</span>);  <span class="c">// 24</span>
+
+<span class="c">// Partial application — fix some args</span>
+<span class="k">const</span> greet = greeting => name => <span class="s">`</span>${greeting}<span class="s">, </span>${name}<span class="s">`</span>;
+<span class="k">const</span> sayHi = <span class="f">greet</span>(<span class="s">"Hi"</span>);
+<span class="f">sayHi</span>(<span class="s">"Ada"</span>);  <span class="c">// "Hi, Ada"</span></pre>
+<h4>Memoization</h4>
+<p>Cache a function's results so repeated calls with the same input are instant.</p>
+<pre><span class="k">function</span> <span class="f">memoize</span>(fn) {
+  <span class="k">const</span> cache = <span class="k">new</span> <span class="f">Map</span>();
+  <span class="k">return</span> (...args) => {
+    <span class="k">const</span> key = JSON.<span class="f">stringify</span>(args);
+    <span class="k">if</span> (cache.<span class="f">has</span>(key)) <span class="k">return</span> cache.<span class="f">get</span>(key);
+    <span class="k">const</span> result = <span class="f">fn</span>(...args);
+    cache.<span class="f">set</span>(key, result);
+    <span class="k">return</span> result;
+  };
+}
+<span class="k">const</span> fastFib = <span class="f">memoize</span>(fib);</pre>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="iterators-generators">
+  <div class="wrap">
+    <span class="kicker">Custom iteration</span>
+    <h3>Iterators & Generators</h3>
+    
+<p><strong>Iterators</strong> define how an object is looped over. <strong>Generators</strong> are special functions that produce values lazily, pausing and resuming.</p>
+<h4>Generators</h4>
+<pre><span class="k">function</span>* <span class="f">range</span>(start, end) {
+  <span class="k">for</span> (<span class="k">let</span> i = start; i <= end; i++) {
+    <span class="k">yield</span> i;   <span class="c">// pause and emit a value</span>
+  }
+}
+
+<span class="k">for</span> (<span class="k">const</span> n <span class="k">of</span> <span class="f">range</span>(<span class="n">1</span>, <span class="n">4</span>)) console.<span class="f">log</span>(n); <span class="c">// 1 2 3 4</span>
+[...<span class="f">range</span>(<span class="n">1</span>, <span class="n">3</span>)];  <span class="c">// [1, 2, 3]</span>
+
+<span class="c">// Infinite sequences — lazy, only computes when asked</span>
+<span class="k">function</span>* <span class="f">ids</span>() {
+  <span class="k">let</span> i = <span class="n">1</span>;
+  <span class="k">while</span> (<span class="k">true</span>) <span class="k">yield</span> i++;
+}
+<span class="k">const</span> gen = <span class="f">ids</span>();
+gen.<span class="f">next</span>().value;  <span class="c">// 1</span>
+gen.<span class="f">next</span>().value;  <span class="c">// 2</span></pre>
+<h4>Custom iterables</h4>
+<pre><span class="k">const</span> collection = {
+  items: [<span class="s">"a"</span>, <span class="s">"b"</span>, <span class="s">"c"</span>],
+  [Symbol.iterator]() {
+    <span class="k">let</span> i = <span class="n">0</span>;
+    <span class="k">return</span> {
+      next: () => i < <span class="k">this</span>.items.length
+        ? { value: <span class="k">this</span>.items[i++], done: <span class="k">false</span> }
+        : { value: <span class="k">undefined</span>, done: <span class="k">true</span> }
+    };
+  }
+};
+[...collection];  <span class="c">// ["a", "b", "c"]</span></pre>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="collections">
+  <div class="wrap">
+    <span class="kicker">Better collections</span>
+    <h3>Map, Set, WeakMap, WeakSet</h3>
+    
+<p>Beyond objects and arrays, ES6 added specialized collection types with distinct advantages.</p>
+<h4>Map — keyed collection</h4>
+<pre><span class="k">const</span> map = <span class="k">new</span> <span class="f">Map</span>();
+map.<span class="f">set</span>(<span class="s">"name"</span>, <span class="s">"Ada"</span>);
+map.<span class="f">set</span>(obj, <span class="s">"any value as key!"</span>); <span class="c">// keys can be ANY type</span>
+map.<span class="f">get</span>(<span class="s">"name"</span>);   <span class="c">// "Ada"</span>
+map.<span class="f">has</span>(<span class="s">"name"</span>);   <span class="c">// true</span>
+map.size;          <span class="c">// 2</span>
+<span class="k">for</span> (<span class="k">const</span> [k, v] <span class="k">of</span> map) { <span class="c">/* iterates in insertion order */</span> }</pre>
+<p><strong>Map vs Object:</strong> Maps allow any key type, preserve insertion order, have a <code class="inl">.size</code>, and iterate easily — better for dynamic key/value collections.</p>
+<h4>Set — unique values</h4>
+<pre><span class="k">const</span> set = <span class="k">new</span> <span class="f">Set</span>([<span class="n">1</span>, <span class="n">2</span>, <span class="n">2</span>, <span class="n">3</span>, <span class="n">3</span>]);
+set.size;           <span class="c">// 3 — duplicates removed</span>
+set.<span class="f">add</span>(<span class="n">4</span>);
+set.<span class="f">has</span>(<span class="n">2</span>);          <span class="c">// true</span>
+
+<span class="c">// Deduplicate an array instantly</span>
+<span class="k">const</span> unique = [...<span class="k">new</span> <span class="f">Set</span>(arr)];</pre>
+<h4>WeakMap / WeakSet</h4>
+<p>Hold object keys "weakly" — if no other reference exists, they can be garbage collected. Used for private data and caches without memory leaks. Not iterable and keys must be objects.</p>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="symbols">
+  <div class="wrap">
+    <span class="kicker">Unique identifiers</span>
+    <h3>Symbols</h3>
+    
+<p>A <strong>Symbol</strong> is a unique, immutable primitive often used as a non-colliding object key or to define special behaviors.</p>
+<pre><span class="k">const</span> id = <span class="f">Symbol</span>(<span class="s">"id"</span>);     <span class="c">// the string is just a label</span>
+<span class="f">Symbol</span>(<span class="s">"id"</span>) === <span class="f">Symbol</span>(<span class="s">"id"</span>); <span class="c">// false — always unique</span>
+
+<span class="k">const</span> user = { [id]: <span class="n">123</span>, name: <span class="s">"Ada"</span> };
+user[id];  <span class="c">// 123 — won't clash with any "id" string key</span></pre>
+<h4>Well-known symbols</h4>
+<p>Symbols also let you hook into language behaviors:</p>
+<pre><span class="k">const</span> obj = {
+  [Symbol.iterator]() { <span class="c">/* makes obj iterable */</span> },
+  [Symbol.toPrimitive](hint) { <span class="c">/* custom coercion */</span> }
+};
+
+<span class="c">// Global symbol registry (shared across realms)</span>
+<span class="k">const</span> shared = Symbol.<span class="f">for</span>(<span class="s">"app.id"</span>);
+Symbol.<span class="f">for</span>(<span class="s">"app.id"</span>) === shared;  <span class="c">// true</span></pre>
+<div class="note">Symbol keys are excluded from <code class="inl">for...in</code>, <code class="inl">Object.keys</code>, and JSON — making them useful for "hidden" metadata.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="proxy-reflect">
+  <div class="wrap">
+    <span class="kicker">Metaprogramming</span>
+    <h3>Proxy & Reflect</h3>
+    
+<p><strong>Proxy</strong> wraps an object to intercept and customize fundamental operations (get, set, delete, etc.). <strong>Reflect</strong> provides the default versions of those operations.</p>
+<pre><span class="k">const</span> target = { name: <span class="s">"Ada"</span>, age: <span class="n">36</span> };
+
+<span class="k">const</span> proxy = <span class="k">new</span> <span class="f">Proxy</span>(target, {
+  <span class="f">get</span>(obj, prop) {
+    console.<span class="f">log</span>(<span class="s">`reading </span>${prop}<span class="s">`</span>);
+    <span class="k">return</span> Reflect.<span class="f">get</span>(obj, prop);
+  },
+  <span class="f">set</span>(obj, prop, value) {
+    <span class="k">if</span> (prop === <span class="s">"age"</span> && <span class="k">typeof</span> value !== <span class="s">"number"</span>) {
+      <span class="k">throw</span> <span class="k">new</span> <span class="f">TypeError</span>(<span class="s">"age must be a number"</span>);
+    }
+    <span class="k">return</span> Reflect.<span class="f">set</span>(obj, prop, value);
+  }
+});
+
+proxy.name;        <span class="c">// logs "reading name" → "Ada"</span>
+proxy.age = <span class="s">"old"</span>;  <span class="c">// throws TypeError</span></pre>
+<div class="note">Proxies power reactive frameworks (Vue 3's reactivity, MobX), validation layers, and observable objects. They're advanced but conceptually elegant: intercept any operation and decide what happens.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="modules-deep">
+  <div class="wrap">
+    <span class="kicker">ESM vs CommonJS</span>
+    <h3>Module Systems Deep-Dive</h3>
+    
+<p>JavaScript has two major module systems. Understanding both matters when working across browser and Node.js code.</p>
+<h4>ES Modules (ESM) — the standard</h4>
+<pre><span class="k">import</span> { thing } <span class="k">from</span> <span class="s">"./mod.js"</span>;
+<span class="k">export</span> <span class="k">const</span> x = <span class="n">1</span>;
+<span class="c">// Static, hoisted, async-loaded, tree-shakeable</span>
+<span class="c">// Works in browsers and modern Node</span></pre>
+<h4>CommonJS (CJS) — Node's legacy</h4>
+<pre><span class="k">const</span> thing = <span class="f">require</span>(<span class="s">"./mod"</span>);
+module.exports = { x: <span class="n">1</span> };
+<span class="c">// Synchronous, dynamic, Node-only origin</span></pre>
+<h4>Dynamic imports</h4>
+<p>Load modules on demand — for code splitting and lazy loading.</p>
+<pre><span class="k">async</span> <span class="k">function</span> <span class="f">loadChart</span>() {
+  <span class="k">const</span> { Chart } = <span class="k">await</span> <span class="k">import</span>(<span class="s">"./chart.js"</span>);
+  <span class="k">return</span> <span class="k">new</span> <span class="f">Chart</span>();
+}
+<span class="c">// Only fetches chart.js when actually needed</span></pre>
+<div class="note"><strong>Tree-shaking</strong> — because ESM imports are static, bundlers can detect and eliminate unused exports, shrinking your final bundle. CJS's dynamic nature makes this harder.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="memory">
+  <div class="wrap">
+    <span class="kicker">Managing resources</span>
+    <h3>Memory & Garbage Collection</h3>
+    
+<p>JavaScript manages memory automatically via <strong>garbage collection</strong> (GC). The engine periodically frees memory occupied by values that are no longer reachable. Understanding this prevents leaks.</p>
+<h4>How reachability works</h4>
+<p>A value is "reachable" if it can be accessed from a root (global object, current call stack, etc.) through a chain of references. Once nothing references it, it becomes eligible for collection.</p>
+<h4>Common leak sources</h4>
+<ul>
+<li><strong>Forgotten timers/listeners</strong> — <code class="inl">setInterval</code> never cleared, listeners never removed, keep their closures alive.</li>
+<li><strong>Detached DOM nodes</strong> — JS variables holding removed elements.</li>
+<li><strong>Growing caches</strong> — Maps/objects that only ever add entries.</li>
+<li><strong>Closures</strong> capturing large objects unnecessarily.</li>
+</ul>
+<pre><span class="c">// Leak: listener keeps `bigData` alive forever</span>
+element.<span class="f">addEventListener</span>(<span class="s">"click"</span>, () => use(bigData));
+
+<span class="c">// Fix: remove when done</span>
+<span class="k">const</span> handler = () => use(bigData);
+element.<span class="f">addEventListener</span>(<span class="s">"click"</span>, handler);
+<span class="c">// later:</span>
+element.<span class="f">removeEventListener</span>(<span class="s">"click"</span>, handler);</pre>
+<div class="note">Use <code class="inl">WeakMap</code>/<code class="inl">WeakSet</code> for caches keyed by objects so entries vanish when the objects do. Browser DevTools' Memory panel finds leaks via heap snapshots.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="performance">
+  <div class="wrap">
+    <span class="kicker">Debounce, throttle & more</span>
+    <h3>Performance Patterns</h3>
+    
+<p>Smooth, responsive apps require controlling how often expensive work runs.</p>
+<h4>Debounce — wait for a pause</h4>
+<p>Run a function only after activity stops. Ideal for search-as-you-type and resize handlers.</p>
+<pre><span class="k">function</span> <span class="f">debounce</span>(fn, delay) {
+  <span class="k">let</span> timer;
+  <span class="k">return</span> (...args) => {
+    <span class="f">clearTimeout</span>(timer);
+    timer = <span class="f">setTimeout</span>(() => <span class="f">fn</span>(...args), delay);
+  };
+}
+input.<span class="f">addEventListener</span>(<span class="s">"input"</span>,
+  <span class="f">debounce</span>(search, <span class="n">300</span>));</pre>
+<h4>Throttle — limit the rate</h4>
+<p>Run at most once per interval. Ideal for scroll and mousemove handlers.</p>
+<pre><span class="k">function</span> <span class="f">throttle</span>(fn, limit) {
+  <span class="k">let</span> waiting = <span class="k">false</span>;
+  <span class="k">return</span> (...args) => {
+    <span class="k">if</span> (!waiting) {
+      <span class="f">fn</span>(...args);
+      waiting = <span class="k">true</span>;
+      <span class="f">setTimeout</span>(() => waiting = <span class="k">false</span>, limit);
+    }
+  };
+}</pre>
+<h4>Other techniques</h4>
+<ul>
+<li><strong>requestAnimationFrame</strong> for visual updates synced to the display refresh.</li>
+<li><strong>Batch DOM reads/writes</strong> to avoid layout thrashing.</li>
+<li><strong>Virtualize long lists</strong> — render only visible rows.</li>
+<li><strong>Lazy-load</strong> images and modules.</li>
+</ul>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="web-apis">
+  <div class="wrap">
+    <span class="kicker">Beyond the DOM</span>
+    <h3>Browser Web APIs</h3>
+    
+<p>Browsers expose many APIs beyond the DOM for storage, background work, and device features.</p>
+<h4>Storage</h4>
+<pre><span class="c">// localStorage — persists across sessions, ~5–10MB, strings only</span>
+localStorage.<span class="f">setItem</span>(<span class="s">"theme"</span>, <span class="s">"dark"</span>);
+localStorage.<span class="f">getItem</span>(<span class="s">"theme"</span>);   <span class="c">// "dark"</span>
+localStorage.<span class="f">removeItem</span>(<span class="s">"theme"</span>);
+
+<span class="c">// sessionStorage — same API, cleared when tab closes</span>
+<span class="c">// Store objects via JSON</span>
+localStorage.<span class="f">setItem</span>(<span class="s">"user"</span>, JSON.<span class="f">stringify</span>(user));</pre>
+<h4>IndexedDB</h4>
+<p>A full in-browser database for large, structured data and offline apps (asynchronous, more complex — often used via wrappers like idb).</p>
+<h4>Web Workers</h4>
+<p>Run heavy computation on a background thread so the UI stays responsive.</p>
+<pre><span class="c">// main.js</span>
+<span class="k">const</span> worker = <span class="k">new</span> <span class="f">Worker</span>(<span class="s">"worker.js"</span>);
+worker.<span class="f">postMessage</span>({ numbers: bigArray });
+worker.onmessage = e => console.<span class="f">log</span>(e.data);
+
+<span class="c">// worker.js</span>
+onmessage = e => {
+  <span class="k">const</span> result = heavyCompute(e.data.numbers);
+  <span class="f">postMessage</span>(result);
+};</pre>
+<div class="note"><strong>Service Workers</strong> are a special worker enabling offline caching, background sync, and push notifications — the foundation of Progressive Web Apps.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="design-patterns">
+  <div class="wrap">
+    <span class="kicker">Reusable solutions</span>
+    <h3>Design Patterns</h3>
+    
+<p>Design patterns are proven templates for common problems. A few that appear constantly in JavaScript:</p>
+<h4>Module pattern</h4>
+<pre><span class="k">const</span> counter = (() => {
+  <span class="k">let</span> count = <span class="n">0</span>;              <span class="c">// private</span>
+  <span class="k">return</span> {
+    <span class="f">increment</span>() { <span class="k">return</span> ++count; },
+    <span class="f">get</span>() { <span class="k">return</span> count; }
+  };
+})();  <span class="c">// IIFE creates one instance with privacy</span></pre>
+<h4>Observer (pub/sub)</h4>
+<pre><span class="k">class</span> <span class="f">Emitter</span> {
+  #listeners = {};
+  <span class="f">on</span>(event, fn) {
+    (<span class="k">this</span>.#listeners[event] ??= []).<span class="f">push</span>(fn);
+  }
+  <span class="f">emit</span>(event, data) {
+    (<span class="k">this</span>.#listeners[event] ?? []).<span class="f">forEach</span>(fn => <span class="f">fn</span>(data));
+  }
+}</pre>
+<h4>Factory & Singleton</h4>
+<pre><span class="c">// Factory — function that builds objects</span>
+<span class="k">const</span> createUser = (name, role) => ({ name, role, created: Date.<span class="f">now</span>() });
+
+<span class="c">// Singleton — one shared instance</span>
+<span class="k">const</span> Config = (() => {
+  <span class="k">let</span> instance;
+  <span class="k">return</span> { <span class="f">get</span>() { <span class="k">return</span> instance ??= { loaded: <span class="k">true</span> }; } };
+})();</pre>
+<div class="note">Patterns are vocabulary, not rules. Reach for them when they clarify a real problem — not to force structure where simple code would do.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<div class="level-band" id="ecosystem">
+  <div class="wrap">
+    <span class="num">4</span>
+    <h2>Ecosystem & Beyond</h2>
+    <span class="tag" style="color:#c4a3e0;border-color:#c4a3e0">Level 4</span>
+  </div>
+  <div class="wrap"><p class="intro">JavaScript rarely runs alone. This final level surveys the surrounding world — the language layer on top (TypeScript), the tools that build and test your code, the runtimes and frameworks, and the security knowledge every professional needs.</p></div>
+</div>
+<section class="topic" id="typescript">
+  <div class="wrap">
+    <span class="kicker">JavaScript with types</span>
+    <h3>TypeScript</h3>
+    
+<p><strong>TypeScript</strong> is a superset of JavaScript that adds static types, checked before your code runs. It catches whole categories of bugs at write-time and powers excellent editor autocomplete.</p>
+<pre><span class="c">// Annotate variables, params, and returns</span>
+<span class="k">function</span> <span class="f">greet</span>(name: <span class="k">string</span>): <span class="k">string</span> {
+  <span class="k">return</span> <span class="s">`Hi, </span>${name}<span class="s">`</span>;
+}
+
+<span class="c">// Interfaces & types describe object shapes</span>
+<span class="k">interface</span> User {
+  id: <span class="k">number</span>;
+  name: <span class="k">string</span>;
+  email?: <span class="k">string</span>;   <span class="c">// optional</span>
+  readonly role: <span class="k">string</span>;
+}
+
+<span class="c">// Generics — reusable, type-safe abstractions</span>
+<span class="k">function</span> <span class="f">first</span>&lt;T&gt;(arr: T[]): T | <span class="k">undefined</span> {
+  <span class="k">return</span> arr[<span class="n">0</span>];
+}
+
+<span class="c">// Union & literal types</span>
+<span class="k">type</span> Status = <span class="s">"idle"</span> | <span class="s">"loading"</span> | <span class="s">"error"</span>;</pre>
+<div class="note">TypeScript compiles to plain JavaScript — types are erased at build time. It's now the default for most large codebases and well worth learning once your JS fundamentals are solid.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="build-tools">
+  <div class="wrap">
+    <span class="kicker">From source to ship</span>
+    <h3>Build Tools & Bundlers</h3>
+    
+<p>Modern apps use build tools to bundle modules, transpile new syntax for older browsers, and optimize output.</p>
+<ul>
+<li><strong>Vite</strong> — the current default: instant dev server (native ESM), fast production builds via Rollup. Great DX.</li>
+<li><strong>esbuild</strong> — extremely fast bundler/transpiler written in Go; powers many other tools.</li>
+<li><strong>Webpack</strong> — the long-dominant, highly configurable bundler; still common in established projects.</li>
+<li><strong>Rollup</strong> — excellent for libraries; pioneered tree-shaking.</li>
+<li><strong>Babel</strong> — transpiles modern/experimental JS to widely supported versions.</li>
+</ul>
+<h4>What they do</h4>
+<ul>
+<li><strong>Bundling</strong> — combine many modules into few optimized files.</li>
+<li><strong>Transpiling</strong> — convert TS/JSX/new syntax to compatible JS.</li>
+<li><strong>Minification</strong> — strip whitespace and shorten names.</li>
+<li><strong>Tree-shaking</strong> — remove unused code.</li>
+<li><strong>Code splitting</strong> — load parts of the app on demand.</li>
+</ul>
+<div class="note">Start a modern project with <code class="inl">npm create vite@latest</code>. You rarely configure bundlers by hand anymore — sensible defaults cover most needs.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="npm">
+  <div class="wrap">
+    <span class="kicker">npm and dependencies</span>
+    <h3>Package Management</h3>
+    
+<p><strong>npm</strong> (Node Package Manager) installs and manages the libraries your project depends on, drawing from a registry of millions of packages.</p>
+<pre><span class="c"># Initialize a project</span>
+npm init -y
+
+<span class="c"># Install dependencies</span>
+npm install lodash          <span class="c"># runtime dependency</span>
+npm install -D vitest       <span class="c"># dev-only dependency</span>
+npm install                 <span class="c"># install everything in package.json</span>
+
+<span class="c"># Run scripts defined in package.json</span>
+npm run build
+npm test</pre>
+<h4>Key files</h4>
+<ul>
+<li><strong>package.json</strong> — project metadata, dependencies, and scripts.</li>
+<li><strong>package-lock.json</strong> — exact resolved versions for reproducible installs.</li>
+<li><strong>node_modules/</strong> — the installed packages (never commit this).</li>
+</ul>
+<p><strong>Semantic versioning</strong> (<code class="inl">^1.2.3</code>): MAJOR.MINOR.PATCH. <code class="inl">^</code> allows minor/patch updates; <code class="inl">~</code> allows patch only.</p>
+<div class="note">Alternatives like <strong>pnpm</strong> (disk-efficient) and <strong>yarn</strong> offer the same role with different trade-offs. <strong>npx</strong> runs a package without installing it globally.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="testing">
+  <div class="wrap">
+    <span class="kicker">Confidence in code</span>
+    <h3>Testing</h3>
+    
+<p>Automated tests verify your code works and keep it working as you change it. They're essential for any non-trivial project.</p>
+<h4>Test types</h4>
+<ul>
+<li><strong>Unit</strong> — test one function/module in isolation.</li>
+<li><strong>Integration</strong> — test pieces working together.</li>
+<li><strong>End-to-end (E2E)</strong> — test full user flows in a real browser.</li>
+</ul>
+<pre><span class="c">// A unit test with Vitest / Jest</span>
+<span class="k">import</span> { describe, it, expect } <span class="k">from</span> <span class="s">"vitest"</span>;
+<span class="k">import</span> { add } <span class="k">from</span> <span class="s">"./math.js"</span>;
+
+<span class="f">describe</span>(<span class="s">"add"</span>, () => {
+  <span class="f">it</span>(<span class="s">"sums two numbers"</span>, () => {
+    <span class="f">expect</span>(<span class="f">add</span>(<span class="n">2</span>, <span class="n">3</span>)).<span class="f">toBe</span>(<span class="n">5</span>);
+  });
+  <span class="f">it</span>(<span class="s">"handles negatives"</span>, () => {
+    <span class="f">expect</span>(<span class="f">add</span>(-<span class="n">1</span>, <span class="n">1</span>)).<span class="f">toBe</span>(<span class="n">0</span>);
+  });
+});</pre>
+<h4>The toolkit</h4>
+<ul>
+<li><strong>Vitest / Jest</strong> — test runners and assertion libraries.</li>
+<li><strong>Testing Library</strong> — test UI the way users interact with it.</li>
+<li><strong>Playwright / Cypress</strong> — E2E browser automation.</li>
+</ul>
+<div class="note">Aim to test behavior, not implementation. Good tests give you the confidence to refactor fearlessly.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="nodejs">
+  <div class="wrap">
+    <span class="kicker">JavaScript on the server</span>
+    <h3>Node.js</h3>
+    
+<p><strong>Node.js</strong> runs JavaScript outside the browser, powered by Chrome's V8 engine. It's used for servers, APIs, command-line tools, and build tooling.</p>
+<pre><span class="c">// A minimal HTTP server (no framework)</span>
+<span class="k">import</span> { createServer } <span class="k">from</span> <span class="s">"node:http"</span>;
+
+<span class="f">createServer</span>((req, res) => {
+  res.<span class="f">writeHead</span>(<span class="n">200</span>, { <span class="s">"Content-Type"</span>: <span class="s">"application/json"</span> });
+  res.<span class="f">end</span>(JSON.<span class="f">stringify</span>({ message: <span class="s">"Hello from Node"</span> }));
+}).<span class="f">listen</span>(<span class="n">3000</span>);</pre>
+<h4>The ecosystem</h4>
+<ul>
+<li><strong>Built-in modules</strong> — <code class="inl">fs</code> (files), <code class="inl">path</code>, <code class="inl">http</code>, <code class="inl">crypto</code>, <code class="inl">os</code>, and more.</li>
+<li><strong>Express / Fastify / Hono</strong> — web frameworks for building APIs.</li>
+<li><strong>Event-driven, non-blocking I/O</strong> — handles many connections efficiently on one thread.</li>
+</ul>
+<div class="note">Newer server runtimes — <strong>Deno</strong> (secure-by-default, built-in TS) and <strong>Bun</strong> (all-in-one, very fast) — are worth knowing about, though Node remains the default.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="frameworks">
+  <div class="wrap">
+    <span class="kicker">Building UIs at scale</span>
+    <h3>Frontend Frameworks</h3>
+    
+<p>Frameworks manage UI complexity — state, rendering, and components — so you don't hand-write DOM updates. The major players:</p>
+<ul>
+<li><strong>React</strong> — the most widely used. Component-based, uses a virtual DOM, vast ecosystem. Pairs with Next.js for full-stack apps.</li>
+<li><strong>Vue</strong> — approachable, gentle learning curve, excellent docs. Nuxt is its full-stack meta-framework.</li>
+<li><strong>Angular</strong> — full, opinionated framework with TypeScript and tooling built in; common in enterprises.</li>
+<li><strong>Svelte</strong> — compiles components to minimal vanilla JS at build time; no runtime virtual DOM. SvelteKit for full apps.</li>
+<li><strong>Solid</strong> — fine-grained reactivity with React-like syntax and exceptional performance.</li>
+</ul>
+<pre><span class="c">// A React component — the dominant mental model</span>
+<span class="k">function</span> <span class="f">Counter</span>() {
+  <span class="k">const</span> [count, setCount] = <span class="f">useState</span>(<span class="n">0</span>);
+  <span class="k">return</span> (
+    &lt;button onClick={() => <span class="f">setCount</span>(count + <span class="n">1</span>)}&gt;
+      Clicked {count} times
+    &lt;/button&gt;
+  );
+}</pre>
+<div class="note"><strong>Learn vanilla JS first.</strong> Frameworks come and go; the language fundamentals underneath them are permanent and transfer everywhere.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="state">
+  <div class="wrap">
+    <span class="kicker">Sharing app data</span>
+    <h3>State Management</h3>
+    
+<p>As apps grow, sharing and updating data across many components becomes hard. State management tools solve this.</p>
+<ul>
+<li><strong>Component state</strong> — local data (React's useState, Vue's ref). The starting point.</li>
+<li><strong>Context / provide-inject</strong> — pass data down a tree without prop-drilling.</li>
+<li><strong>Stores</strong> — centralized, shared state: Redux/Redux Toolkit, Zustand, Jotai (React); Pinia (Vue); Svelte stores.</li>
+<li><strong>Server state</strong> — TanStack Query, SWR: cache, sync, and revalidate data from APIs.</li>
+</ul>
+<h4>Core idea</h4>
+<p>Most modern state tools follow one principle: state is a <strong>single source of truth</strong>, updated through controlled actions, and the UI reactively re-renders when it changes. This predictable one-way flow makes complex apps debuggable.</p>
+<div class="note">Don't reach for heavy state libraries too early. Local state plus a little context handles many apps. Add a store only when genuinely shared, cross-cutting state appears.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="security">
+  <div class="wrap">
+    <span class="kicker">Protecting users</span>
+    <h3>Web Security</h3>
+    
+<p>Every JavaScript developer must understand common vulnerabilities and their defenses. Security is not optional.</p>
+<h4>XSS — Cross-Site Scripting</h4>
+<p>Attackers inject malicious scripts via unsanitized user input. Defense: never insert untrusted data as HTML; use <code class="inl">textContent</code>, sanitize with libraries like DOMPurify, and set a Content Security Policy.</p>
+<pre><span class="c">// ❌ Dangerous</span>
+el.innerHTML = userInput;
+<span class="c">// ✅ Safe</span>
+el.textContent = userInput;</pre>
+<h4>CSRF — Cross-Site Request Forgery</h4>
+<p>Tricks a logged-in user's browser into making unwanted requests. Defense: anti-CSRF tokens, <code class="inl">SameSite</code> cookies.</p>
+<h4>CORS — Cross-Origin Resource Sharing</h4>
+<p>A browser security model controlling which origins may call your API. Servers grant access via response headers; it's a protection, not an obstacle to route around.</p>
+<h4>General principles</h4>
+<ul>
+<li>Validate and sanitize <strong>all</strong> input — on the server, always.</li>
+<li>Never trust the client; never put secrets/API keys in front-end code.</li>
+<li>Use HTTPS everywhere; store tokens carefully (httpOnly cookies over localStorage for sensitive auth).</li>
+<li>Keep dependencies updated — run <code class="inl">npm audit</code>.</li>
+</ul>
+<div class="pitfall">Most breaches exploit basic, well-known issues. Following the fundamentals above prevents the large majority of real-world attacks.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<section class="topic" id="pwa-wasm">
+  <div class="wrap">
+    <span class="kicker">The frontier</span>
+    <h3>PWAs, WebAssembly & What's Next</h3>
+    
+<p>A few advanced platform capabilities round out an expert's awareness.</p>
+<h4>Progressive Web Apps (PWAs)</h4>
+<p>Web apps that behave like native ones: installable, offline-capable (via service workers), with push notifications. Built from a manifest file plus a service worker caching strategy.</p>
+<h4>WebAssembly (Wasm)</h4>
+<p>A binary format letting languages like Rust, C++, and Go run in the browser at near-native speed. JavaScript and Wasm interoperate — use Wasm for compute-heavy tasks (image/video processing, games, simulations) and JS for everything else.</p>
+<pre><span class="c">// Loading a Wasm module from JS</span>
+<span class="k">const</span> wasm = <span class="k">await</span> WebAssembly.<span class="f">instantiateStreaming</span>(
+  <span class="f">fetch</span>(<span class="s">"module.wasm"</span>)
+);
+wasm.instance.exports.<span class="f">compute</span>(<span class="n">42</span>);</pre>
+<h4>Keeping current</h4>
+<ul>
+<li><strong>TC39</strong> proposals shape the language yearly — watch stage-3/4 features (Temporal, decorators, pattern matching).</li>
+<li><strong>MDN Web Docs</strong> is the authoritative reference for every API.</li>
+<li><strong>Read source code</strong> of libraries you use — the fastest way to deepen mastery.</li>
+</ul>
+<div class="note">You never "finish" learning JavaScript — and that's the appeal. Solid fundamentals plus curiosity carry you through every new tool the ecosystem invents.</div>
+
+    <a href="#top" class="toplink">↑ Back to top</a>
+  </div>
+</section>
+<footer>
+  <div class="wrap">
+    <p>The JavaScript Atlas — a single-file study companion.</p>
+    <p style="opacity:.6;font-size:12.5px">Tip: bookmark a topic by its sidebar link. Everything here runs in any modern browser console or Node.js.</p>
+  </div>
+</footer>
+</main>
+</div>
+<script>
+  // highlight active nav item on scroll
+  const links=[...document.querySelectorAll('nav.side a')];
+  const map=new Map(links.map(l=>[l.getAttribute('href').slice(1),l]));
+  const obs=new IntersectionObserver(es=>{
+    es.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(l=>l.style.background='');
+        const a=map.get(e.target.id);
+        if(a)a.style.background='rgba(111,154,76,.22)';
+      }
+    });
+  },{rootMargin:'-10% 0px -80% 0px'});
+  document.querySelectorAll('section.topic, .level-band').forEach(s=>{if(s.id)obs.observe(s)});
+  // close mobile menu on link click
+  document.querySelectorAll('nav.side a').forEach(a=>a.addEventListener('click',()=>{
+    if(window.innerWidth<=880)document.querySelector('nav.side').classList.remove('open');
+  }));
+</script>
+</body>
+</html>
